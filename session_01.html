@@ -3110,12 +3110,24 @@ function triggerGoogleLogin() {
     alert('Google Sign-In לא נטען. בדוק את ה-Client ID ונסה שוב.');
     return;
   }
-  google.accounts.id.initialize({
+  const tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: GOOGLE_CLIENT_ID,
-    callback:  handleCredentialResponse,
-    ux_mode:   'popup'
+    scope: 'email profile openid',
+    callback: (tokenResponse) => {
+      if (tokenResponse.error) return;
+      fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: { Authorization: 'Bearer ' + tokenResponse.access_token }
+      })
+      .then(r => r.json())
+      .then(user => {
+        storeUser(user);
+        logVisitor(user);
+        showApp(user);
+      })
+      .catch(() => alert('שגיאה בטעינת פרטי המשתמש'));
+    }
   });
-  google.accounts.id.prompt();
+  tokenClient.requestAccessToken({ prompt: 'select_account' });
 }
 
 function handleSignOut() {
@@ -3129,16 +3141,7 @@ function handleSignOut() {
   if (user) {
     showApp(user);
   }
-  // Initialize GSI (for One Tap) when ready
-  window.addEventListener('load', () => {
-    if (typeof google !== 'undefined' && GOOGLE_CLIENT_ID !== 'YOUR_GOOGLE_CLIENT_ID') {
-      google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback:  handleCredentialResponse,
-        ux_mode:   'popup'
-      });
-    }
-  });
+  // GSI loaded — nothing to pre-initialize for token flow
 })();
 
 // ── PROGRESS BAR ─────────────────────────────────────
