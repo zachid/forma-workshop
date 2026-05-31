@@ -3079,7 +3079,7 @@ function logVisitor(user) {
   fetch(SHEET_WEBHOOK_URL, {
     method: 'POST',
     mode: 'no-cors',
-    headers: {'Content-Type': 'application/json'},
+    headers: {'Content-Type': 'text/plain'},
     body: JSON.stringify({
       name:      user.name  || '',
       email:     user.email || '',
