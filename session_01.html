@@ -39,29 +39,29 @@ body{
 /* ── NAV ─────────────────────────────────── */
 nav{
   position:fixed;top:0;left:0;right:0;
-  height:48px;background:var(--blue);
+  height:62px;background:var(--blue);
   display:flex;align-items:center;justify-content:space-between;
   padding:0 48px;z-index:200;
-  border-bottom:1px solid var(--rule-blue);
+  border-bottom:1px solid rgba(255,255,255,0.15);
 }
 .nav-brand{
-  font-family:'JetBrains Mono',monospace;font-size:11px;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--cream);
-  display:flex;align-items:center;gap:10px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  letter-spacing:.12em;text-transform:uppercase;color:#fff;
+  display:flex;align-items:center;gap:12px;
 }
 .nav-logo{
-  width:26px;height:26px;border:1.5px solid var(--cream-faint);
+  width:30px;height:30px;border:1.5px solid rgba(255,255,255,0.5);
   border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:9px;font-weight:700;color:var(--cream);
+  font-size:10px;font-weight:700;color:#fff;
 }
 .nav-links{display:flex;gap:28px;list-style:none;}
 .nav-links a{
-  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--cream-dim);text-decoration:none;
+  font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,0.72);text-decoration:none;
   font-family:'JetBrains Mono',monospace;
   transition:color .15s;
 }
-.nav-links a:hover{color:var(--cream);}
+.nav-links a:hover{color:#fff;}
 .nav-session{
   font-family:'JetBrains Mono',monospace;font-size:9px;
   color:var(--cream-faint);letter-spacing:.1em;
@@ -69,7 +69,7 @@ nav{
 
 /* ── PROGRESS ────────────────────────────── */
 .progress{
-  position:fixed;top:48px;left:0;right:0;height:2px;
+  position:fixed;top:62px;left:0;right:0;height:2px;
   background:rgba(255,255,255,0.08);z-index:199;
 }
 .progress-bar{height:100%;background:var(--cream);width:0%;transition:width .08s;}
@@ -98,7 +98,7 @@ nav{
   user-select:none;
 }
 .hero-top{
-  position:absolute;top:48px;left:0;right:0;
+  position:absolute;top:62px;left:0;right:0;
   display:flex;align-items:flex-start;justify-content:space-between;
   padding:28px 48px;
 }
@@ -587,21 +587,55 @@ footer{
 .code-block .comment{color:rgba(255,255,255,.2);}
 
 /* ══ SESSION SWITCHER (in nav) ═══════════════════════ */
-.session-switcher{display:flex;gap:2px;align-items:center;}
+.session-switcher{
+  display:flex;align-items:center;gap:2px;
+  background:rgba(0,0,0,.22);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:7px;
+  padding:3px;
+}
 .ss-btn{
-  font-family:'JetBrains Mono',monospace;font-size:9px;
-  letter-spacing:.1em;text-transform:uppercase;
-  padding:5px 12px;border-radius:3px;
-  border:1px solid rgba(240,213,180,.2);
-  background:transparent;color:var(--cream-dim);
-  cursor:pointer;transition:all .15s;
+  display:flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 13px;border-radius:5px;
+  border:none;background:transparent;
+  color:rgba(255,255,255,.5);
+  cursor:pointer;
+  transition:
+    color 130ms cubic-bezier(0.23,1,0.32,1),
+    background 130ms cubic-bezier(0.23,1,0.32,1),
+    transform 100ms ease-out,
+    box-shadow 130ms ease-out;
+  white-space:nowrap;
 }
-.ss-btn:hover{background:rgba(255,255,255,.07);color:var(--cream);}
+.ss-btn:hover{
+  background:rgba(255,255,255,.09);
+  color:rgba(255,255,255,.85);
+}
+.ss-btn:active{transform:scale(0.96);}
 .ss-btn.active{
-  background:var(--cream);color:var(--blue);
-  border-color:var(--cream);font-weight:700;
+  background:var(--cream);
+  color:var(--blue-dark);
+  font-weight:700;
+  box-shadow:0 1px 4px rgba(0,0,0,.25);
+  color:#1e30b8;
 }
-.ss-btn.ss-all{border-style:dashed;}
+.ss-btn .ss-n{
+  font-size:9px;opacity:.55;font-weight:400;
+  letter-spacing:.04em;
+}
+.ss-btn.active .ss-n{opacity:.65;}
+.ss-divider{
+  width:1px;height:16px;
+  background:rgba(255,255,255,.1);
+  margin:0 2px;flex-shrink:0;
+}
+.ss-btn.ss-all{
+  color:rgba(255,255,255,.4);
+}
+.ss-btn.ss-all:hover{color:rgba(255,255,255,.75);}
+.ss-btn.ss-all.active{color:#1e30b8;}
 
 /* ══ TAB PANES ═══════════════════════════════════════ */
 .tab-pane{display:none;}
@@ -716,9 +750,10 @@ footer{
     <li><a href="#prompts">Prompts</a></li>
   </ul>
   <div class="session-switcher">
-    <button class="ss-btn active" data-tab="01">מפגש 01</button>
-    <button class="ss-btn" data-tab="02">מפגש 02</button>
-    <button class="ss-btn ss-all" data-tab="all">∑ כל הפרומפטים</button>
+    <button class="ss-btn active" data-tab="01"><span class="ss-n">01</span>מפגש</button>
+    <button class="ss-btn" data-tab="02"><span class="ss-n">02</span>מפגש</button>
+    <span class="ss-divider"></span>
+    <button class="ss-btn ss-all" data-tab="all"><span class="ss-n">∑</span>פרומפטים</button>
   </div>
 </nav>
 

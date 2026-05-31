@@ -8,3 +8,4 @@
 video*
 *.pdf
 .DS_Store
+.vercel
