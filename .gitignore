@@ -1,0 +1,10 @@
+# Large media files — not needed for the site
+*.mov
+*.mp4
+*.key
+*.srt
+*.tsv
+*.vtt
+video*
+*.pdf
+.DS_Store

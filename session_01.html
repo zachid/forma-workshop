@@ -1,0 +1,2867 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flow Follows Prompt — פורמה מפגש 01</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+:root{
+  --blue:#3451E8;
+  --blue-dark:#2640C8;
+  --blue-glow:rgba(52,81,232,0.12);
+  --cream:#F0D5B4;
+  --cream-dim:rgba(240,213,180,0.5);
+  --cream-faint:rgba(240,213,180,0.18);
+  --bg:#F2F1EF;
+  --bg2:#E9E8E6;
+  --white:#FFFFFF;
+  --ink:#111111;
+  --ink2:#444444;
+  --ink3:#888888;
+  --rule:rgba(0,0,0,0.1);
+  --rule-blue:rgba(255,255,255,0.1);
+}
+
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Assistant',sans-serif;
+  font-weight:400;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── NAV ─────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  height:48px;background:var(--blue);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;z-index:200;
+  border-bottom:1px solid var(--rule-blue);
+}
+.nav-brand{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--cream);
+  display:flex;align-items:center;gap:10px;
+}
+.nav-logo{
+  width:26px;height:26px;border:1.5px solid var(--cream-faint);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:700;color:var(--cream);
+}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--cream-dim);text-decoration:none;
+  font-family:'JetBrains Mono',monospace;
+  transition:color .15s;
+}
+.nav-links a:hover{color:var(--cream);}
+.nav-session{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  color:var(--cream-faint);letter-spacing:.1em;
+}
+
+/* ── PROGRESS ────────────────────────────── */
+.progress{
+  position:fixed;top:48px;left:0;right:0;height:2px;
+  background:rgba(255,255,255,0.08);z-index:199;
+}
+.progress-bar{height:100%;background:var(--cream);width:0%;transition:width .08s;}
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+.hero{
+  min-height:100vh;background:var(--blue);
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:48px 48px 72px;
+  position:relative;overflow:hidden;
+}
+.hero-watermark{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;overflow:hidden;
+}
+.hero-watermark span{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:clamp(200px,28vw,380px);
+  color:rgba(255,255,255,0.03);
+  letter-spacing:-.04em;text-transform:uppercase;
+  white-space:nowrap;line-height:1;
+  user-select:none;
+}
+.hero-top{
+  position:absolute;top:48px;left:0;right:0;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding:28px 48px;
+}
+.hero-eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--cream-dim);
+}
+.hero-num{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:clamp(120px,15vw,200px);
+  color:var(--cream-faint);line-height:1;
+  letter-spacing:-.04em;
+}
+.hero-body{margin-top:auto;}
+.hero-title{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:clamp(56px,8vw,120px);
+  line-height:.92;letter-spacing:-.03em;
+  color:var(--cream);text-transform:uppercase;
+  margin-bottom:24px;
+}
+.hero-title em{
+  font-style:italic;font-weight:400;
+  color:rgba(240,213,180,.4);display:block;
+  font-size:.55em;letter-spacing:.01em;margin-top:8px;
+}
+.hero-rule{
+  width:100%;height:1px;background:var(--rule-blue);margin-bottom:32px;
+}
+.hero-footer{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:40px;
+}
+.hero-desc{
+  font-size:15px;color:var(--cream-dim);
+  max-width:480px;line-height:1.75;font-weight:300;
+}
+.hero-meta{display:flex;gap:32px;}
+.hero-meta-item .label{
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(240,213,180,.28);display:block;margin-bottom:4px;
+}
+.hero-meta-item .val{
+  font-size:13px;font-weight:500;color:var(--cream-dim);
+}
+
+/* ══════════════════════════════════════════
+   SECTION BASE
+══════════════════════════════════════════ */
+.s{padding:80px 48px;}
+.s-blue{background:var(--blue);padding:80px 48px;}
+.s-dark{background:var(--ink);padding:80px 48px;}
+.s-white{background:var(--white);padding:80px 48px;}
+
+.s-num{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:clamp(80px,10vw,140px);
+  color:rgba(0,0,0,.04);line-height:1;
+  letter-spacing:-.04em;margin-bottom:-16px;
+  display:block;
+}
+.s-blue .s-num{color:rgba(255,255,255,.06);}
+.s-dark .s-num{color:rgba(255,255,255,.05);}
+
+.s-label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.s-label::after{content:'';display:block;width:28px;height:1px;background:currentColor;opacity:.4;}
+.s-blue .s-label{color:var(--cream-dim);}
+.s-dark .s-label{color:rgba(255,255,255,.3);}
+
+.s-title{
+  font-family:'Assistant',sans-serif;font-weight:700;
+  font-size:clamp(28px,3.5vw,48px);
+  line-height:1.05;letter-spacing:-.025em;
+  color:var(--ink);margin-bottom:16px;
+}
+.s-blue .s-title{color:var(--cream);}
+.s-dark .s-title{color:var(--white);}
+.hl{color:var(--blue);}
+.s-blue .hl,.s-dark .hl{color:rgba(240,213,180,.6);}
+
+.s-intro{
+  font-size:16px;color:var(--ink2);
+  max-width:600px;line-height:1.8;font-weight:300;
+  margin-bottom:48px;
+}
+.s-blue .s-intro{color:var(--cream-dim);}
+.s-dark .s-intro{color:rgba(255,255,255,.45);}
+
+hr.rule{border:none;border-top:1px solid var(--rule);margin:40px 0;}
+.s-blue hr.rule,.s-dark hr.rule{border-top-color:var(--rule-blue);}
+
+/* ══════════════════════════════════════════
+   STATEMENT (full-bleed blue typographic)
+══════════════════════════════════════════ */
+.statement{
+  background:var(--blue);
+  padding:80px 48px;
+  position:relative;overflow:hidden;
+}
+.statement::before{
+  content:'';position:absolute;
+  bottom:-120px;right:-80px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(255,255,255,.05) 0%,transparent 65%);
+  pointer-events:none;
+}
+.statement-kicker{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cream-faint);margin-bottom:32px;
+}
+.statement-big{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:clamp(56px,9vw,128px);
+  line-height:.9;letter-spacing:-.04em;
+  color:var(--cream);text-transform:uppercase;
+}
+.statement-big .dim{color:rgba(240,213,180,.25);}
+.statement-sub{
+  font-size:17px;font-weight:300;
+  color:var(--cream-dim);
+  max-width:520px;margin-top:40px;line-height:1.75;
+  border-right:2px solid rgba(240,213,180,.25);
+  padding-right:24px;
+}
+
+/* ══════════════════════════════════════════
+   AGENDA
+══════════════════════════════════════════ */
+.agenda{display:flex;flex-direction:column;gap:0;max-width:760px;}
+.agenda-item{
+  display:flex;align-items:center;gap:0;
+  border-bottom:1px solid var(--rule);
+  transition:background .12s;
+}
+.agenda-item:first-child{border-top:1px solid var(--rule);}
+.agenda-item:hover{background:var(--white);}
+.agenda-n{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--blue);font-weight:500;
+  min-width:56px;padding:20px 24px 20px 0;
+  flex-shrink:0;
+}
+.agenda-text{
+  flex:1;font-size:14px;font-weight:500;
+  color:var(--ink);padding:20px 0;
+}
+.agenda-sub{
+  font-size:11px;font-weight:400;color:var(--ink3);
+  display:block;margin-top:2px;
+}
+.agenda-tag{
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 12px;border-radius:2px;
+  margin-right:0;flex-shrink:0;
+}
+.agenda-tag.theory{background:rgba(52,81,232,.08);color:var(--blue);}
+.agenda-tag.hands{background:rgba(30,160,100,.08);color:#1A8A50;}
+.agenda-tag.setup{background:rgba(140,80,200,.08);color:#7C40B0;}
+.agenda-tag.brk{background:var(--bg2);color:var(--ink3);}
+.agenda-item.is-break{background:var(--bg2);}
+.agenda-item.is-break .agenda-text{color:var(--ink3);}
+
+/* ══════════════════════════════════════════
+   TOOLS
+══════════════════════════════════════════ */
+.tools-row{
+  display:grid;grid-template-columns:220px 1fr;
+  gap:0;border:1px solid var(--rule);border-radius:8px;
+  overflow:hidden;margin-bottom:2px;
+}
+.tools-label-col{
+  background:var(--bg2);padding:24px;
+  border-left:1px solid var(--rule);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.tools-label-col .era{
+  font-family:'Assistant',sans-serif;font-weight:700;
+  font-size:20px;color:var(--ink);margin-bottom:4px;
+}
+.tools-label-col .era-he{
+  font-size:12px;color:var(--ink3);
+}
+.tools-label-col.active-col{
+  background:var(--blue);border-left-color:transparent;
+}
+.tools-label-col.active-col .era{color:var(--cream);}
+.tools-label-col.active-col .era-he{color:var(--cream-dim);}
+.tools-content-col{background:var(--white);padding:24px 32px;}
+.tools-content-col.active-content{background:rgba(52,81,232,.04);}
+
+.tool-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{
+  font-size:12px;padding:5px 12px;border-radius:3px;
+  background:var(--bg);border:1px solid var(--rule);
+  color:var(--ink2);font-weight:400;
+}
+.chip.dim{color:var(--ink3);border-style:dashed;}
+.chip.bold{
+  background:var(--blue);color:var(--cream);
+  border-color:transparent;font-weight:500;
+}
+.chip.active-chip{
+  background:var(--blue);color:var(--cream);
+  border-color:transparent;font-weight:600;
+}
+
+/* ══════════════════════════════════════════
+   WORKFLOW STEPS (Gemini / GPT)
+══════════════════════════════════════════ */
+.workflow{display:flex;flex-direction:column;gap:0;margin-bottom:40px;}
+.wf-step{
+  display:grid;grid-template-columns:64px 1fr;
+  gap:0;border-bottom:1px solid var(--rule);
+}
+.s-blue .wf-step{border-bottom-color:var(--rule-blue);}
+.wf-step:first-child{border-top:1px solid var(--rule);}
+.s-blue .wf-step:first-child{border-top-color:var(--rule-blue);}
+.wf-n{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:36px;color:rgba(0,0,0,.06);
+  padding:24px 16px 24px 0;
+  display:flex;align-items:flex-start;justify-content:flex-end;
+  line-height:1;letter-spacing:-.02em;
+}
+.s-blue .wf-n{color:rgba(255,255,255,.1);}
+.wf-body{padding:24px 0 24px 24px;border-right:1px solid var(--rule);}
+.s-blue .wf-body{border-right-color:var(--rule-blue);}
+.wf-title{
+  font-size:15px;font-weight:600;color:var(--ink);
+  margin-bottom:6px;
+}
+.s-blue .wf-title{color:var(--cream);}
+.wf-desc{font-size:13px;color:var(--ink2);line-height:1.6;}
+.s-blue .wf-desc{color:var(--cream-dim);}
+
+.prompt-box{
+  background:var(--ink);border-radius:6px;overflow:hidden;
+  margin-top:16px;
+}
+.prompt-box-header{
+  padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;gap:8px;
+}
+.prompt-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);}
+.prompt-box-label{
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.2);
+}
+.prompt-box-body{
+  padding:16px;font-family:'JetBrains Mono',monospace;
+  font-size:11.5px;line-height:1.9;color:rgba(255,255,255,.7);
+  direction:ltr;text-align:left;
+}
+.prompt-box-body .ph{color:var(--cream);opacity:.55;}
+.prompt-box-body .kw{color:#7EC8E3;}
+
+/* on white sections, boxes stay dark */
+.prompt-inline{
+  background:var(--bg2);border-radius:6px;
+  padding:14px 18px;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;
+  line-height:1.9;color:var(--ink2);direction:ltr;text-align:left;
+  border-right:3px solid var(--blue);
+}
+
+/* ══════════════════════════════════════════
+   CONCEPTS: AGENTS vs ASSISTANTS
+══════════════════════════════════════════ */
+.versus{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:2px;border-radius:8px;overflow:hidden;
+  border:1px solid var(--rule);
+  margin-bottom:24px;
+}
+.versus-card{padding:36px;}
+.versus-card.v-assistant{background:var(--white);}
+.versus-card.v-agent{background:var(--blue);}
+.versus-label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:16px;
+}
+.versus-card.v-agent .versus-label{color:var(--cream-dim);}
+.versus-title{
+  font-family:'Assistant',sans-serif;font-weight:700;
+  font-size:26px;letter-spacing:-.02em;
+  color:var(--ink);margin-bottom:12px;
+}
+.versus-card.v-agent .versus-title{color:var(--cream);}
+.versus-desc{font-size:13.5px;color:var(--ink2);line-height:1.7;}
+.versus-card.v-agent .versus-desc{color:var(--cream-dim);}
+.versus-examples{
+  margin-top:20px;display:flex;flex-direction:column;gap:6px;
+}
+.versus-ex{
+  font-size:12px;color:var(--ink3);
+  padding:8px 12px;background:var(--bg);
+  border-radius:3px;font-family:'JetBrains Mono',monospace;
+}
+.versus-card.v-agent .versus-ex{
+  color:var(--cream-dim);
+  background:rgba(255,255,255,.07);
+}
+.analogy{
+  padding:20px 24px;border-radius:6px;
+  background:var(--blue-glow);
+  border-right:3px solid var(--blue);
+  font-size:14px;color:var(--ink);line-height:1.75;
+}
+.analogy strong{color:var(--blue);}
+
+/* ══════════════════════════════════════════
+   DESIGN CYCLE
+══════════════════════════════════════════ */
+.cycle{display:flex;overflow-x:auto;gap:2px;margin-bottom:32px;}
+.cycle-step{
+  flex:1;min-width:130px;
+  padding:20px 16px;background:var(--white);
+  border-top:3px solid transparent;
+  transition:border-color .2s;text-align:center;
+}
+.cycle-step:hover{border-top-color:var(--blue);}
+.cs-n{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  color:var(--ink3);margin-bottom:10px;
+}
+.cs-en{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.cs-he{font-size:12px;color:var(--ink3);}
+
+.cycle-ai{
+  display:grid;grid-template-columns:repeat(6,1fr);
+  gap:2px;background:var(--blue);border-radius:8px;
+  overflow:hidden;padding:24px;
+}
+.cai-step{
+  padding:16px 12px;text-align:center;
+  background:rgba(255,255,255,.06);border-radius:4px;
+}
+.cai-name{font-size:12px;font-weight:600;color:var(--cream);margin-bottom:8px;}
+.cai-tools{font-size:10px;color:rgba(240,213,180,.4);line-height:1.6;}
+
+/* ══════════════════════════════════════════
+   CLAUDE MODES
+══════════════════════════════════════════ */
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;border-radius:8px;overflow:hidden;border:1px solid var(--rule);}
+.mode{padding:32px;background:var(--white);}
+.mode.is-active{background:var(--blue);}
+.mode-n{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue);margin-bottom:14px;display:flex;align-items:center;gap:8px;
+}
+.mode.is-active .mode-n{color:var(--cream-faint);}
+.mode-badge{
+  font-size:8px;padding:3px 8px;border-radius:2px;
+  background:var(--cream-faint);color:var(--cream);
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.mode-title{
+  font-family:'Assistant',sans-serif;font-weight:700;
+  font-size:22px;letter-spacing:-.01em;
+  color:var(--ink);margin-bottom:10px;
+}
+.mode.is-active .mode-title{color:var(--cream);}
+.mode-desc{font-size:13px;color:var(--ink2);line-height:1.65;}
+.mode.is-active .mode-desc{color:var(--cream-dim);}
+
+/* ══════════════════════════════════════════
+   PRINCIPLES
+══════════════════════════════════════════ */
+.principles{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.principle{
+  padding:36px;background:var(--blue);
+  position:relative;overflow:hidden;
+}
+.principle::before{
+  content:attr(data-n);
+  position:absolute;bottom:-20px;left:-10px;
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:120px;color:rgba(255,255,255,.04);
+  line-height:1;letter-spacing:-.04em;
+  pointer-events:none;
+}
+.pr-n{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--cream-faint);margin-bottom:20px;
+}
+.pr-title{
+  font-family:'Inter',sans-serif;font-weight:700;
+  font-size:24px;letter-spacing:-.02em;
+  color:var(--cream);margin-bottom:14px;
+}
+.pr-desc{font-size:13.5px;color:var(--cream-dim);line-height:1.75;}
+
+/* ══════════════════════════════════════════
+   PROMPTS LIBRARY
+══════════════════════════════════════════ */
+.prompt-group-head{
+  font-size:12px;font-weight:600;
+  color:rgba(255,255,255,.4);
+  margin-bottom:12px;margin-top:36px;
+  padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.07);
+  font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;
+  font-size:10px;
+}
+.prompt-group-head:first-child{margin-top:0;}
+
+.prompt-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:6px;overflow:hidden;margin-bottom:10px;
+}
+.prompt-card-head{
+  padding:12px 16px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.prompt-card-name{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);
+}
+.prompt-card-goal{font-size:11px;color:rgba(255,255,255,.25);}
+.prompt-card-body{
+  padding:18px 16px;font-family:'JetBrains Mono',monospace;
+  font-size:11.5px;line-height:2;color:rgba(255,255,255,.7);
+  direction:ltr;text-align:left;
+}
+.prompt-card-body .ph{color:var(--cream);opacity:.6;}
+.prompt-card-body .kw{color:#90D4F0;}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer{
+  background:var(--blue);padding:56px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--rule-blue);
+}
+.footer-left{}
+.footer-brand{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:28px;letter-spacing:-.02em;color:var(--cream);
+}
+.footer-tagline{
+  font-size:12px;color:var(--cream-dim);margin-top:6px;font-weight:300;
+}
+.footer-right{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--cream-faint);line-height:2;text-align:left;
+}
+
+/* ══════════════════════════════════════════
+   UTILITIES
+══════════════════════════════════════════ */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;}
+.callout{
+  padding:18px 24px;background:var(--blue-glow);
+  border-right:3px solid var(--blue);border-radius:4px;
+  font-size:13.5px;color:var(--ink);line-height:1.7;margin-top:24px;
+}
+.callout strong{color:var(--blue);}
+.callout.light-on-blue{
+  background:rgba(255,255,255,.07);border-right-color:rgba(240,213,180,.4);
+  color:var(--cream-dim);
+}
+.callout.light-on-blue strong{color:var(--cream);}
+.code-block{
+  background:rgba(0,0,0,.5);border-radius:6px;
+  padding:20px;font-family:'JetBrains Mono',monospace;
+  font-size:12px;line-height:2;color:rgba(255,255,255,.6);
+  direction:ltr;text-align:left;margin-top:20px;
+}
+.code-block .path{color:var(--cream);}
+.code-block .comment{color:rgba(255,255,255,.2);}
+
+/* ══ SESSION SWITCHER (in nav) ═══════════════════════ */
+.session-switcher{display:flex;gap:2px;align-items:center;}
+.ss-btn{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 12px;border-radius:3px;
+  border:1px solid rgba(240,213,180,.2);
+  background:transparent;color:var(--cream-dim);
+  cursor:pointer;transition:all .15s;
+}
+.ss-btn:hover{background:rgba(255,255,255,.07);color:var(--cream);}
+.ss-btn.active{
+  background:var(--cream);color:var(--blue);
+  border-color:var(--cream);font-weight:700;
+}
+.ss-btn.ss-all{border-style:dashed;}
+
+/* ══ TAB PANES ═══════════════════════════════════════ */
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* ══ SESSION 02 SPECIFIC ════════════════════════════ */
+.install-row{
+  display:grid;grid-template-columns:44px 1fr;
+  gap:0;border-bottom:1px solid var(--rule);
+}
+.install-row:first-child{border-top:1px solid var(--rule);}
+.install-n{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--blue);padding:20px 16px 20px 0;
+  display:flex;align-items:flex-start;justify-content:flex-end;
+  flex-shrink:0;font-weight:600;
+}
+.install-body{padding:20px 0 20px 20px;border-right:1px solid var(--rule);}
+.install-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.install-sub{font-size:12px;color:var(--ink3);}
+
+.system-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:2px;border-radius:8px;overflow:hidden;
+  border:1px solid var(--rule);
+}
+.sys-card{padding:32px;background:var(--white);}
+.sys-card:nth-child(3),.sys-card:nth-child(4){background:var(--blue);}
+.sys-n{
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--blue);margin-bottom:16px;
+}
+.sys-card:nth-child(3) .sys-n,.sys-card:nth-child(4) .sys-n{color:var(--cream-faint);}
+.sys-title{
+  font-family:'Assistant',sans-serif;font-weight:700;
+  font-size:22px;color:var(--ink);margin-bottom:10px;
+  letter-spacing:-.015em;
+}
+.sys-card:nth-child(3) .sys-title,.sys-card:nth-child(4) .sys-title{color:var(--cream);}
+.sys-desc{font-size:13px;color:var(--ink2);line-height:1.65;}
+.sys-card:nth-child(3) .sys-desc,.sys-card:nth-child(4) .sys-desc{color:var(--cream-dim);}
+.sys-file{
+  margin-top:16px;font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--ink3);line-height:2;
+}
+.sys-card:nth-child(3) .sys-file,.sys-card:nth-child(4) .sys-file{color:rgba(240,213,180,.4);}
+
+.tip-list{display:flex;flex-direction:column;gap:2px;}
+.tip-row{
+  display:flex;align-items:flex-start;gap:0;
+  border-bottom:1px solid var(--rule);
+  background:var(--white);
+}
+.tip-row:first-child{border-top:1px solid var(--rule);}
+.tip-icon{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  color:var(--blue);padding:18px 16px 18px 0;
+  flex-shrink:0;width:40px;text-align:center;
+  font-weight:700;letter-spacing:.06em;
+}
+.tip-body{flex:1;padding:18px 0 18px 16px;border-right:1px solid var(--rule);}
+.tip-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px;}
+.tip-sub{font-size:12px;color:var(--ink3);font-family:'JetBrains Mono',monospace;}
+
+/* All Prompts summary */
+.all-prompts-session{
+  margin-bottom:64px;
+}
+.all-prompts-session-head{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:clamp(48px,6vw,80px);line-height:.9;
+  letter-spacing:-.04em;color:rgba(255,255,255,.05);
+  margin-bottom:8px;
+}
+.all-session-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);margin-bottom:32px;
+  display:flex;align-items:center;gap:12px;
+}
+.all-session-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08);}
+
+@media(max-width:900px){
+  nav{padding:0 20px;}
+  .hero{padding:80px 24px 56px;}
+  .hero-top{padding:16px 24px;}
+  .s,.s-blue,.s-dark,.s-white,.statement,.footer{padding:60px 24px;}
+  .versus,.modes,.principles,.two-col,.three-col{grid-template-columns:1fr;}
+  .tools-row{grid-template-columns:1fr;}
+  .cycle-ai{grid-template-columns:repeat(3,1fr);}
+  .hero-footer{flex-direction:column;}
+  .hero-meta{flex-wrap:wrap;gap:20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">ZD</div>
+    AI Factory
+  </div>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#agenda">סדר יום</a></li>
+    <li><a href="#tools">כלים</a></li>
+    <li><a href="#gemini">Gemini</a></li>
+    <li><a href="#gpt">GPT Image</a></li>
+    <li><a href="#agents">Agents</a></li>
+    <li><a href="#claude">Claude</a></li>
+    <li><a href="#prompts">Prompts</a></li>
+  </ul>
+  <div class="session-switcher">
+    <button class="ss-btn active" data-tab="01">מפגש 01</button>
+    <button class="ss-btn" data-tab="02">מפגש 02</button>
+    <button class="ss-btn ss-all" data-tab="all">∑ כל הפרומפטים</button>
+  </div>
+</nav>
+
+<div class="progress"><div class="progress-bar" id="pbar"></div></div>
+
+<!-- ══════════════════════════════════════════════════
+     TAB PANE 01 — מפגש 01
+══════════════════════════════════════════════════ -->
+<div class="tab-pane active" id="pane-01">
+
+<!-- ══ HERO ══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-watermark"><span>AI</span></div>
+  <div class="hero-top">
+    <div class="hero-eyebrow">פורמה · מפגש 01 · Zachi Diner / AI Factory</div>
+    <div class="hero-num">01</div>
+  </div>
+  <div class="hero-body">
+    <h1 class="hero-title">
+      Flow Follows Prompt
+      <em>A Studio Full of Design Agents</em>
+    </h1>
+    <div class="hero-rule"></div>
+    <div class="hero-footer">
+      <p class="hero-desc">
+        שיטות עבודה חדשות עם AI — מהפרומפט הנכון ועד לסטודיו שמפעיל עצמו.
+        Flow / Design / Code / Skills / Agents / Prompts
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span class="label">קהל</span>
+          <span class="val">Amdocs Design / Forma</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="label">מפגש</span>
+          <span class="val">01 מתוך 3</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="label">שנה</span>
+          <span class="val">2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AGENDA ════════════════════════════════════════ -->
+<section class="s" id="agenda">
+  <span class="s-num">01</span>
+  <div class="s-label">סדר יום</div>
+  <h2 class="s-title">מה נעשה היום — <span class="hl">מפגש 01</span></h2>
+  <p class="s-intro">תשע תחנות שמובילות מהפתיחה ועד לתרגול מעשי עם Claude — כל תחנה בונה על הקודמת</p>
+
+  <div class="agenda">
+    <div class="agenda-item">
+      <span class="agenda-n">01</span>
+      <span class="agenda-text">
+        פתיחה
+        <span class="agenda-sub">היכרות, מטרות, מה שנצא איתו</span>
+      </span>
+      <span class="agenda-tag theory">theory</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">02</span>
+      <span class="agenda-text">
+        ווקפלאו הוא הכל
+        <span class="agenda-sub">Context + Flow — הפילוסופיה שמאחורי הכל</span>
+      </span>
+      <span class="agenda-tag theory">theory</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">03</span>
+      <span class="agenda-text">
+        Gemini + Google Flow — לוגו מהרעיון לנכס
+        <span class="agenda-sub">Gemini כ-Creative Director, Google Flow כסטודיו — מותג KŌRI</span>
+      </span>
+      <span class="agenda-tag hands">hands-on</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">04</span>
+      <span class="agenda-text">
+        GPT Image 2 — Brand Identity Board ומוקאפים
+        <span class="agenda-sub">לוח זהות מלא 9:16 + מוקאפי מוצר + פוסטים לאינסטגרם</span>
+      </span>
+      <span class="agenda-tag hands">hands-on</span>
+    </div>
+    <div class="agenda-item is-break">
+      <span class="agenda-n">—</span>
+      <span class="agenda-text">הפסקה</span>
+      <span class="agenda-tag brk">break</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">05</span>
+      <span class="agenda-text">
+        אסיסטנטים מול סוכנים
+        <span class="agenda-sub">ההבדל שמשנה את כל שיטת העבודה</span>
+      </span>
+      <span class="agenda-tag theory">theory</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">06</span>
+      <span class="agenda-text">
+        האקוסיסטם של Claude
+        <span class="agenda-sub">Chat, Cowork, Code — שלושה מצבים לשלושה צרכים</span>
+      </span>
+      <span class="agenda-tag theory">theory</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">07</span>
+      <span class="agenda-text">
+        הגדרת Claude
+        <span class="agenda-sub">התקנה, תיקיות, CLAUDE.md, Skills ראשונה</span>
+      </span>
+      <span class="agenda-tag setup">setup</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">08</span>
+      <span class="agenda-text">
+        Claude Design — תרגול ראשון
+        <span class="agenda-sub">ניתוח בריף, כיווני עיצוב, נכסים אוטומטיים</span>
+      </span>
+      <span class="agenda-tag hands">hands-on</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATEMENT: CONTEXT + FLOW ═════════════════════ -->
+<section class="statement">
+  <div class="statement-kicker">הפילוסופיה · The Philosophy</div>
+  <div class="statement-big">
+    Context<br>
+    <span class="dim">+</span> Flow<br>
+    Is Everything.
+  </div>
+  <p class="statement-sub">
+    כל מה שה-AI מחזיר לך הוא ישירות תוצאה של הקשר שנתת לו ושל הזרימה שבנית.
+    פרומפט בלי הקשר = ניחוש. פרומפט עם הקשר = שותף.
+  </p>
+</section>
+
+<!-- ══ TOOLS ══════════════════════════════════════════ -->
+<section class="s" id="tools">
+  <span class="s-num">02</span>
+  <div class="s-label">נוף הכלים</div>
+  <h2 class="s-title">אז → עכשיו → <span class="hl">מה שבאמת צריך</span></h2>
+  <p class="s-intro">הכלים השתנו לגמרי — השאלה האמיתית היא מה לבחור מתוך הרעש. שלוש שכבות: אז, עכשיו, ומה שנשתמש בו</p>
+
+  <div class="tools-row">
+    <div class="tools-label-col">
+      <div class="era">אז</div>
+      <div class="era-he">הסטודיו המסורתי</div>
+    </div>
+    <div class="tools-content-col">
+      <div class="tool-chips">
+        <span class="chip">Photoshop</span>
+        <span class="chip">Illustrator</span>
+        <span class="chip">AfterEffects</span>
+        <span class="chip dim">Sketch</span>
+        <span class="chip dim">XD</span>
+        <span class="chip">Figma</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tools-row">
+    <div class="tools-label-col">
+      <div class="era">עכשיו</div>
+      <div class="era-he">האקוסיסטם המלא</div>
+    </div>
+    <div class="tools-content-col">
+      <div class="tool-chips">
+        <span class="chip">Google AI Studio</span>
+        <span class="chip">ChatGPT</span>
+        <span class="chip">Claude</span>
+        <span class="chip">NotebookLM</span>
+        <span class="chip">Genspark</span>
+        <span class="chip">Midjourney</span>
+        <span class="chip">FreePik / Magnific</span>
+        <span class="chip">Ideogram</span>
+        <span class="chip">Recraft</span>
+        <span class="chip">Krea</span>
+        <span class="chip">NanoBanana</span>
+        <span class="chip">FireFly</span>
+        <span class="chip">Whisk</span>
+        <span class="chip">Fal.AI</span>
+        <span class="chip">Replicate</span>
+        <span class="chip">Veo3 / Flow</span>
+        <span class="chip">Higgsfield</span>
+        <span class="chip">HeyGen</span>
+        <span class="chip">Kling / Sora</span>
+        <span class="chip">11labs</span>
+        <span class="chip">Suno</span>
+        <span class="chip">Veed / Fabric</span>
+        <span class="chip">Base44</span>
+        <span class="chip">Lovable</span>
+        <span class="chip">Cursor</span>
+        <span class="chip">Weavy</span>
+        <span class="chip">Spaces</span>
+        <span class="chip">Krea Nodes</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tools-row">
+    <div class="tools-label-col active-col">
+      <div class="era">אנחנו</div>
+      <div class="era-he">מה שנשתמש בו</div>
+    </div>
+    <div class="tools-content-col active-content">
+      <div class="tool-chips">
+        <span class="chip active-chip">Gemini</span>
+        <span class="chip active-chip">Google Flow</span>
+        <span class="chip active-chip">ChatGPT + GPT Image 2</span>
+        <span class="chip active-chip">Claude Code</span>
+        <span class="chip active-chip">Figma</span>
+        <span class="chip active-chip">Midjourney</span>
+        <span class="chip active-chip">FreePik / Magnific</span>
+        <span class="chip active-chip">Fal.AI</span>
+        <span class="chip active-chip">11labs</span>
+        <span class="chip active-chip">Suno</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>כלל האצבע:</strong> אל תנסו ללמוד הכל. בחרו 2-3 כלים שעובדים יחד ועשו אותם עמוק. הרוחב מגיע אחרי העומק.
+  </div>
+</section>
+
+<!-- ══ GEMINI FLOW ════════════════════════════════════ -->
+<section class="s-blue" id="gemini">
+  <span class="s-num">03</span>
+  <div class="s-label">תרגול מעשי</div>
+  <h2 class="s-title">Gemini + Google Flow — <span class="hl">לוגו מהרעיון לנכס</span></h2>
+  <p class="s-intro">שני כלים שעובדים יחד: <strong>Gemini</strong> (gemini.google.com) הוא ה-Creative Director — הוא מייצר פרומפטים לוגו מתוך הבריף. <strong>Google Flow</strong> (labs.google/flow) הוא הסטודיו — הוא מגשים אותם לוויזואל. הדמו: מותג הגלידה <strong>KŌRI</strong>.</p>
+
+  <div class="workflow">
+    <div class="wf-step">
+      <div class="wf-n">01</div>
+      <div class="wf-body">
+        <div class="wf-title">Gemini — טענו את הבריף ותנו הקשר</div>
+        <div class="wf-desc">פתחו gemini.google.com. הדביקו את הבריף המלא של המותג בשיחה. ה-AI צריך להכיר את המותג לפני שמבקשים ממנו לעצב.</div>
+        <div class="prompt-box">
+          <div class="prompt-box-header">
+            <div class="prompt-dot"></div>
+            <span class="prompt-box-label">Demo Brand Brief — KŌRI (paste into Gemini)</span>
+          </div>
+          <div class="prompt-box-body">
+KŌRI is a premium Israeli artisanal ice cream boutique.<br>
+3 concept stores + premium corporate event catering.<br>
+Philosophy: Wabi-Sabi minimalism. Less sugar, rare botanical ingredients.<br>
+Target: urban design lovers 25–50, corporate HR buyers.<br>
+Visual DNA: architectural calm meets culinary art.<br>
+Tagline: "We don't sell sugar. We sell a moment of silence."
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n">02</div>
+      <div class="wf-body">
+        <div class="wf-title">Gemini — בקשו פרומפטים לוגו (טקסט בלבד)</div>
+        <div class="wf-desc">זה הפרומפט המרכזי. שמו לב: <em>text response only</em> — גמיני מייצר פרומפטים שיתנו ל-Flow, לא תמונות בעצמו. Creative Director → לא Illustrator.</div>
+        <div class="prompt-box">
+          <div class="prompt-box-header">
+            <div class="prompt-dot"></div>
+            <span class="prompt-box-label">Creative Director Prompt → Gemini</span>
+          </div>
+          <div class="prompt-box-body">
+You are a creative director, brand designer.<br>
+Create a prompt for generative tools for logo concepts creation.<br>
+The logo is for a brand called <span class="kw">KŌRI</span>.<br>
+Read the brief and suggest <span class="kw">3 directions</span> for a logo.<br>
+Provide a <span class="ph">text response only</span>.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n">03</div>
+      <div class="wf-body">
+        <div class="wf-title">Gemini מחזיר 3 כיוונים — כל אחד פרומפט מוכן</div>
+        <div class="wf-desc">גמיני מגיב עם שלושה פרומפטים מוכנים לשימוש. כך נראה הפלט — העתיקו אחד מהם לשלב הבא.</div>
+        <div class="prompt-box">
+          <div class="prompt-box-header">
+            <div class="prompt-dot"></div>
+            <span class="prompt-box-label">Output from Gemini — Direction 1: Monochromatic Minimalist</span>
+          </div>
+          <div class="prompt-box-body">
+A minimalist and modern logo design for an artisanal ice cream<br>
+brand named <span class="kw">"KŌRI"</span>. The logo features clean, elegant<br>
+sans-serif typography for the word "KŌRI", paired with a subtle,<br>
+abstract geometric icon representing a stylized ice crystal or<br>
+a clean scoop silhouette. Soft minimalism, Japandi aesthetic.<br>
+Monochromatic palette of warm off-white and charcoal gray.<br>
+Studio lighting, flat vector style,<br>
+<span class="ph">isolated on a solid light gray background</span>, text response only.
+          </div>
+        </div>
+        <div class="prompt-box" style="margin-top:8px;">
+          <div class="prompt-box-header">
+            <div class="prompt-dot"></div>
+            <span class="prompt-box-label">Direction 2: Refined Organic (Clay &amp; Earth Tones)</span>
+          </div>
+          <div class="prompt-box-body">
+A modern, upscale logo for a premium ice cream brand called <span class="kw">"KŌRI"</span>.<br>
+Organic, fluid shapes resembling a smooth melting artisanal scoop,<br>
+rendered in a clean clay texture. Elegant, spaced-out typography.<br>
+Color palette: soft sand tones, matte charcoal,<br>
+single accent of deep matcha green.<br>
+High-end culinary branding, minimalist style, vector logo,<br>
+<span class="ph">flat background</span>, text response only.
+          </div>
+        </div>
+        <div class="prompt-box" style="margin-top:8px;">
+          <div class="prompt-box-header">
+            <div class="prompt-dot"></div>
+            <span class="prompt-box-label">Direction 3: Bold Editorial (Typographic)</span>
+          </div>
+          <div class="prompt-box-body">
+An editorial-style typographic logo for a luxury ice cream brand<br>
+named <span class="kw">"KŌRI"</span>. Bold yet elegant high-contrast serif typography,<br>
+with the Japanese Kanji for ice <span class="kw">(冰)</span> integrated as a small crisp<br>
+secondary element. Inspired by architectural magazines and<br>
+minimalist lifestyle brands. High contrast black and white,<br>
+stark and powerful, flat vector icon, clean margins,<br>
+<span class="ph">isolated on white</span>, text response only.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n">04</div>
+      <div class="wf-body">
+        <div class="wf-title">Google Flow — פתחו את הסטודיו</div>
+        <div class="wf-desc">עברו ל-<strong>labs.google/flow</strong>. בחרו מודל <strong>NanoBanana</strong> — זה המודל שמייצר לוגואים ונכסים ויקטוריים בצורה הכי נקייה כרגע. צרו canvas חדש.</div>
+        <div class="prompt-box">
+          <div class="prompt-box-header">
+            <div class="prompt-dot"></div>
+            <span class="prompt-box-label">Google Flow Setup</span>
+          </div>
+          <div class="prompt-box-body">
+<span class="kw">URL:</span> labs.google/flow<br>
+<span class="kw">Model:</span> NanoBanana<br>
+<span class="kw">Canvas:</span> new → paste prompt from Gemini<br>
+<span class="ph">Add "isolated" to any prompt for a clean background</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n">05</div>
+      <div class="wf-body">
+        <div class="wf-title">הכנסו "isolated" — וקבלו לוגו נקי</div>
+        <div class="wf-desc">המילה <strong>isolated</strong> היא מילת המפתח. היא מבטיחה רקע נקי — לא שחור, לא פריים — לוגו ליצוא ישיר לפיגמה. ניסו כל שלוש הכיוונים וציינו איזה מנצח.</div>
+        <div class="prompt-box">
+          <div class="prompt-box-header">
+            <div class="prompt-dot"></div>
+            <span class="prompt-box-label">Final tip — the "isolated" keyword</span>
+          </div>
+          <div class="prompt-box-body">
+[Paste any logo prompt from Gemini]<br>
+<br>
++ add at the end: <span class="ph">isolated on white background</span><br>
+<br>
+→ Result: clean logo, export-ready, no cleanup needed.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout light-on-blue">
+    <strong>Gemini vs. Flow:</strong> גמיני = Creative Director שחושב בטקסט. Flow = הסטודיו שמגשים. כל אחד עושה מה שהוא טוב בו — ביחד זה ה-workflow.
+  </div>
+</section>
+
+<!-- ══ GPT IMAGE 2 ════════════════════════════════════ -->
+<section class="s-white" id="gpt">
+  <span class="s-num">04</span>
+  <div class="s-label">תרגול מעשי</div>
+  <h2 class="s-title">GPT Image 2 — <span class="hl">מוקאפים ולוח זהות מותג</span></h2>
+  <p class="s-intro">אחרי שיש לנו לוגו מ-Flow — עוברים ל-ChatGPT עם GPT Image 2. המטרה: לייצר <strong>Brand Identity Board</strong> מלא, מוקאפים מקצועיים על מוצרי KŌRI, ופוסטים לאינסטגרם. המודל הזה עוקב אחרי הוראות מורכבות ומייצר ברמת פרסום.</p>
+
+  <div class="two-col" style="margin-bottom:40px;">
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">למה GPT Image 2 שונה</div>
+      <div class="workflow">
+        <div class="wf-step" style="border-bottom:1px solid var(--rule);">
+          <div class="wf-n" style="color:rgba(0,0,0,.06);">✓</div>
+          <div class="wf-body">
+            <div class="wf-title">Brand Identity Board — מסמך ויזואלי שלם</div>
+            <div class="wf-desc">מייצר לוח מיתוג ב-9:16 עם מערכת צבעים, טיפוגרפיה ו-6 אפליקציות מותג — מסמך סטודיו אמיתי.</div>
+          </div>
+        </div>
+        <div class="wf-step" style="border-bottom:1px solid var(--rule);">
+          <div class="wf-n" style="color:rgba(0,0,0,.06);">✓</div>
+          <div class="wf-body">
+            <div class="wf-title">מוקאפים ללא אנשים</div>
+            <div class="wf-desc">פרומפטים מוגדרים — ללא ידיים, פנים, גוף — פוקוס על המוצר בלבד. מדויק כמו צלם מסחרי.</div>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-n" style="color:rgba(0,0,0,.06);">✓</div>
+          <div class="wf-body">
+            <div class="wf-title">פוסט אינסטגרם מהמיתוג</div>
+            <div class="wf-desc">על בסיס הלוח הוויזואלי — 4 עיצובי פוסט עקביים שמרגישים כמו פיד אמיתי.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">מה נייצר — עם מותג KŌRI</div>
+      <div class="tool-chips" style="gap:10px;flex-direction:column;">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="chip bold">Brand Identity Board</span>
+          <span class="chip bold">כוס גלידה</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="chip bold">אריזת קלקר</span>
+          <span class="chip bold">פוסטר חנות</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="chip bold">Instagram × 4</span>
+          <span class="chip bold">Image Slicer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="s-label" style="margin-bottom:20px;">הזרימה — שלב אחרי שלב</div>
+  <div class="workflow">
+    <div class="wf-step">
+      <div class="wf-n" style="color:rgba(0,0,0,.06);">01</div>
+      <div class="wf-body">
+        <div class="wf-title">Brand Identity Board — לוח מיתוג ב-9:16</div>
+        <div class="wf-desc">הפרומפט הזה מייצר לוח מיתוג שלם: מ-reference → system → real-world applications. זהו תוצר סטודיו אמיתי.</div>
+        <div class="prompt-inline">
+ROLE: You are a senior brand designer creating a premium agency-grade brand identity board.<br>
+CONTEXT: Use the provided logo, colors, website structure, and brand direction as source material.<br>
+TASK: Create one ultra-clean vertical brand presentation board in exact <span style="color:var(--blue);">9:16 ratio</span>.<br>
+<br>
+STRUCTURE (3 vertical sections):<br>
+• Top 18% — logo · brand essence · 4–5 keywords · 3 design principles<br>
+• Middle 32% — color system · typography · visual language rules<br>
+• Bottom 50% — 6–7 realistic branded applications (website hero, mobile UI,<br>
+&nbsp;&nbsp;social post, poster, packaging, tote, signage)<br>
+<br>
+STYLE: Flat 2D editorial · white/soft neutral background · subtle grid alignment<br>
+RULE: Applications must prove the system works — not just logo stickers on objects.
+        </div>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n" style="color:rgba(0,0,0,.06);">02</div>
+      <div class="wf-body">
+        <div class="wf-title">מוקאפ מוצר — Art Director Prompt</div>
+        <div class="wf-desc">הפרומפט מגדיר אתכם כ-Art Director שמנחה צלם מסחרי. כל מוקאפ מקבל Style / Colors / Composition / Vibe מוגדרים במפורש.</div>
+        <div class="prompt-inline">
+Act as an expert Art Director and Commercial Photographer.<br>
+Brand: <span style="color:var(--blue);">[Brand Name]</span> · Brief: <span style="color:var(--blue);">[Product Type]</span><br>
+<br>
+Suggest 3 distinct mockup placements. For each, write a detailed image prompt:<br>
+• <span style="color:var(--blue);">No people</span> — no hands, faces, or bodies. Product focus only.<br>
+• Branding: clean product styling, crisp logo placement.<br>
+• Every prompt must include: Style, Colors, Composition, Vibe.
+        </div>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n" style="color:rgba(0,0,0,.06);">03</div>
+      <div class="wf-body">
+        <div class="wf-title">פוסט אינסטגרם — מהמיתוג ישירות</div>
+        <div class="wf-desc">אחרי שיש Brand Identity Board — ה-AI מייצר 4 עיצובי פוסט עקביים על בסיסו. לא צריך להסביר מחדש את המותג.</div>
+        <div class="prompt-inline">
+Based on the brand and visuals —<br>
+create <span style="color:var(--blue);">4 new social post designs</span> based on the current design.<br>
+<br>
+Keep the visual system consistent: same colors, same type treatment,<br>
+same grid logic. Each post should feel like part of the same feed.
+        </div>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n" style="color:rgba(0,0,0,.06);">04</div>
+      <div class="wf-body">
+        <div class="wf-title">Image Slicer — חיתוך לפורמטים</div>
+        <div class="wf-desc">בקשו מ-GPT Image 2 לחתוך את הלוח לנכסים נפרדים — כל סקשן לקובץ עצמאי לשימוש בפיגמה.</div>
+        <div class="prompt-inline">
+Slice this brand board into individual assets:<br>
+- Logo lockup (top section) → export as standalone<br>
+- Color palette strip → export as standalone<br>
+- Each application mockup → separate file<br>
+<br>
+Output: clean crops, white background, presentation-ready.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>הסדר חשוב:</strong> Gemini → כיווני לוגו טקסטואליים. Google Flow → לוגו מוויזואל. GPT Image 2 → Brand Identity Board + מוקאפים + פוסטים. כל כלי מגשים את מה שהקודם הכין.
+  </div>
+</section>
+
+<!-- ══ STATEMENT: WORKFLOW ════════════════════════════ -->
+<section class="statement">
+  <div class="statement-kicker">Design Process</div>
+  <div class="statement-big">
+    Workflow<br>
+    <span class="dim">Is</span><br>
+    The Tool.
+  </div>
+  <p class="statement-sub">
+    הכלי לא חשוב. הסדר שבו אתם חושבים, מנסחים ומאכילים את ה-AI — זה מה שמבדיל תוצר בינוני מתוצר מדהים.
+  </p>
+</section>
+
+<!-- ══ DESIGN CYCLE ═══════════════════════════════════ -->
+<section class="s" id="agents">
+  <span class="s-num">05</span>
+  <div class="s-label">תיאוריה</div>
+  <h2 class="s-title">מחזור העיצוב — <span class="hl">לפני ואחרי AI</span></h2>
+  <p class="s-intro">מחזור העיצוב המסורתי לא מת — הוא השתנה. כל שלב עדיין קיים, אבל AI מאיץ, מייצר ובודק בתוך כל אחד מהם</p>
+
+  <div class="s-label" style="margin-bottom:12px;">מחזור מסורתי</div>
+  <div class="cycle">
+    <div class="cycle-step">
+      <div class="cs-n">01</div>
+      <div class="cs-en">Discover</div>
+      <div class="cs-he">גילוי</div>
+    </div>
+    <div class="cycle-step">
+      <div class="cs-n">02</div>
+      <div class="cs-en">Define</div>
+      <div class="cs-he">הגדרה</div>
+    </div>
+    <div class="cycle-step">
+      <div class="cs-n">03</div>
+      <div class="cs-en">Ideate</div>
+      <div class="cs-he">רעיונות</div>
+    </div>
+    <div class="cycle-step">
+      <div class="cs-n">04</div>
+      <div class="cs-en">Prototype</div>
+      <div class="cs-he">אב-טיפוס</div>
+    </div>
+    <div class="cycle-step">
+      <div class="cs-n">05</div>
+      <div class="cs-en">Evaluate</div>
+      <div class="cs-he">הערכה</div>
+    </div>
+    <div class="cycle-step">
+      <div class="cs-n">06</div>
+      <div class="cs-en">Ship</div>
+      <div class="cs-he">שחרור</div>
+    </div>
+  </div>
+
+  <div class="s-label" style="margin-bottom:12px;margin-top:32px;">AI-Augmented — כל שלב מואץ</div>
+  <div class="cycle-ai">
+    <div class="cai-step">
+      <div class="cai-name">Discover</div>
+      <div class="cai-tools">Perplexity · NotebookLM · Research agents</div>
+    </div>
+    <div class="cai-step">
+      <div class="cai-name">Define</div>
+      <div class="cai-tools">Brief synthesis · Strategy agents · Claude</div>
+    </div>
+    <div class="cai-step">
+      <div class="cai-name">Ideate</div>
+      <div class="cai-tools">Gemini · Midjourney · Moodboards</div>
+    </div>
+    <div class="cai-step">
+      <div class="cai-name">Prototype</div>
+      <div class="cai-tools">Claude Code · Lovable · Base44</div>
+    </div>
+    <div class="cai-step">
+      <div class="cai-name">Evaluate</div>
+      <div class="cai-tools">AI critique · Heuristic review · Claude</div>
+    </div>
+    <div class="cai-step">
+      <div class="cai-name">Ship</div>
+      <div class="cai-tools">Auto export · Delivery agents · Figma</div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="s-label" style="margin-bottom:16px;margin-top:40px;">אסיסטנטים מול סוכנים</div>
+  <h2 class="s-title" style="margin-bottom:16px;">מה ההבדל — <span class="hl">וזה משנה הכל</span></h2>
+  <p class="s-intro">לא כל AI עובד באותה דרך. ההבדל בין אסיסטנט לסוכן הוא ההבדל בין מי שעונה לשאלות לבין מי שמבצע משימות</p>
+
+  <div class="versus">
+    <div class="versus-card v-assistant">
+      <div class="versus-label">Assistant — אסיסטנט</div>
+      <div class="versus-title">שואל-עונה</div>
+      <div class="versus-desc">מגיב כשמבקשים ממנו. ממתין להוראה בכל שלב. לא פועל באופן עצמאי. מצוין לניסוח, פידבק, שאלות מהירות.</div>
+      <div class="versus-examples">
+        <div class="versus-ex">ChatGPT · Claude.ai · Gemini</div>
+        <div class="versus-ex">"תכתוב לי קופי לאינסטגרם"</div>
+        <div class="versus-ex">מוסר תשובה → מחכה לשאלה הבאה</div>
+      </div>
+    </div>
+    <div class="versus-card v-agent">
+      <div class="versus-label">Agent — סוכן</div>
+      <div class="versus-title">מתכנן ומבצע</div>
+      <div class="versus-desc">מקבל מטרה → מתכנן → מבצע → מסיים. פועל על קבצים, כלים ומערכות בלי שמבקשים אחרי כל שלב.</div>
+      <div class="versus-examples">
+        <div class="versus-ex">Claude Code · Cursor · Make</div>
+        <div class="versus-ex">"בנה מערכת אוטומציה לבריף"</div>
+        <div class="versus-ex">יתכנן → יכתוב קוד → יריץ → יתקן</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy">
+    <strong>האנלוגיה:</strong> אסיסטנט נותן לך הוראות איך לנסוע. סוכן מסיע אותך, חונה, ושולח הודעה כשהוא סיים.
+  </div>
+</section>
+
+<!-- ══ CLAUDE ECOSYSTEM ═══════════════════════════════ -->
+<section class="s-blue" id="claude">
+  <span class="s-num">06</span>
+  <div class="s-label">האקוסיסטם</div>
+  <h2 class="s-title">Claude — <span class="hl">שלושה מצבים לשלושה צרכים</span></h2>
+  <p class="s-intro">ל-Claude Desktop שלושה מצבי עבודה. כל אחד כלי שונה לצורך שונה — חשוב לדעת מתי להשתמש בכל אחד</p>
+
+  <div class="modes">
+    <div class="mode">
+      <div class="mode-n">01 — Chat</div>
+      <div class="mode-title">שיחה</div>
+      <div class="mode-desc">כמו Claude.ai בדפדפן. מצוין לניסוח, פידבק, שאלות מהירות. מעלים קבצים בודדים. אין גישה לתיקיות, אין יצירת קבצים.</div>
+    </div>
+    <div class="mode">
+      <div class="mode-n">02 — Cowork</div>
+      <div class="mode-title">קובץ יחיד</div>
+      <div class="mode-desc">Claude פותח קובץ ספציפי מהמחשב — PDF, Word, גיליון — ועובד עליו ישירות. פשוט, בלי אוטומציה.</div>
+    </div>
+    <div class="mode is-active">
+      <div class="mode-n">03 — Code <span class="mode-badge">↑ מה שנשתמש</span></div>
+      <div class="mode-title">פרויקט מלא</div>
+      <div class="mode-desc">Claude בוחר תיקייה שלמה. קורא בריפים, נכסי מותג, עבודות קודמות אוטומטית. יוצר קבצים, בונה Skills, מתחבר ל-APIs. זהו מצב הסוכן.</div>
+    </div>
+  </div>
+
+  <div class="s-label" style="margin-bottom:16px;margin-top:48px;">מבנה הפרויקט</div>
+  <div class="code-block">
+<span class="path">my-project/</span><br>
+├── <span class="path">.claude/</span>           <span class="comment">← Claude קורא זה בכל session</span><br>
+│   ├── CLAUDE.md           <span class="comment">← הוראות קבועות לפרויקט</span><br>
+│   └── skills/             <span class="comment">← Skills מותאמות אישית</span><br>
+│       └── analyze-brief.md<br>
+├── <span class="path">brand/</span>             <span class="comment">← לוגו, צבעים, פונטים, guidelines</span><br>
+├── <span class="path">briefs/</span>            <span class="comment">← PDFs, בריפים, צ'אטים עם לקוחות</span><br>
+└── <span class="path">outputs/</span>           <span class="comment">← פלטים, דוחות, נכסים שנוצרו</span>
+  </div>
+
+  <div class="callout light-on-blue" style="margin-top:24px;">
+    <strong>לפני הסשן:</strong> אם מופיעה שגיאת Git — Mac: הריצו <code style="background:rgba(255,255,255,.1);padding:2px 8px;border-radius:3px;font-size:10px;font-family:JetBrains Mono,monospace">xcode-select --install</code> בטרמינל. Windows: הורידו מ-git-scm.com ↗
+  </div>
+</section>
+
+<!-- ══ PRINCIPLES ═════════════════════════════════════ -->
+<section class="s">
+  <span class="s-num">07</span>
+  <div class="s-label">עקרונות עבודה</div>
+  <h2 class="s-title">ארבעה עקרונות — <span class="hl">שמשנים את השחקן</span></h2>
+  <p class="s-intro">לא מדובר בלחיצה על כפתור. אלה עקרונות עבודה שמי שמפנים אותם — עובד אחרת לגמרי</p>
+
+  <div class="principles">
+    <div class="principle" data-n="01">
+      <div class="pr-n">עיקרון 01</div>
+      <div class="pr-title">Context First</div>
+      <div class="pr-desc">לפני שאתם שואלים — תנו הקשר. מי הלקוח, מה הטון, מה כבר נעשה, מה לא. ה-AI לא יודע שום דבר שלא סיפרתם לו. הקשר = איכות.</div>
+    </div>
+    <div class="principle" data-n="02">
+      <div class="pr-n">עיקרון 02</div>
+      <div class="pr-title">Flow over Tools</div>
+      <div class="pr-desc">הכלי לא חשוב — הזרימה חשובה. מה הסדר שבו אתם עובדים? האם כל שלב מזין את הבא? בנו את הזרימה תחילה, הכלים יתממשקו.</div>
+    </div>
+    <div class="principle" data-n="03">
+      <div class="pr-n">עיקרון 03</div>
+      <div class="pr-title">Prompt is Design</div>
+      <div class="pr-desc">פרומפט הוא לא שאלה — הוא מסמך עיצוב. ככל שהוא ברור יותר, ספציפי יותר, ועם דוגמאות — ככה התוצר טוב יותר. כתיבה ← חשיבה.</div>
+    </div>
+    <div class="principle" data-n="04">
+      <div class="pr-n">עיקרון 04</div>
+      <div class="pr-title">Try Manual First</div>
+      <div class="pr-desc">לפני שבונים Skill — עשו ידנית. בדקו שהתוצר עקבי. רק כשהצלחתם פעמיים — הגיע הזמן לאוטומציה. לא עוקפים את הפריסה הידנית.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROMPTS LIBRARY ════════════════════════════════ -->
+<section class="s-dark" id="prompts">
+  <span class="s-num">08</span>
+  <div class="s-label">Prompt Library</div>
+  <h2 class="s-title">ספריית פרומפטים — <span class="hl">למפגש</span></h2>
+  <p class="s-intro">כל הפרומפטים שמשתמשים בהם היום — מחולקים לפי שלב. העתיקו, השתמשו, שנו לפי המותג שלכם</p>
+
+  <div class="prompt-group-head">Context / הקשר</div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-head">
+      <span class="prompt-card-name">Brand Context Primer</span>
+      <span class="prompt-card-goal">פרומפט פתיחה לכל סשן</span>
+    </div>
+    <div class="prompt-card-body">
+You are a senior brand designer working on <span class="ph">[Brand Name]</span>.<br>
+Category: <span class="ph">[industry]</span> · Target audience: <span class="ph">[describe]</span><br>
+Tone of voice: <span class="ph">[3 adjectives]</span><br>
+Visual DNA: think <span class="ph">[reference A]</span> meets <span class="ph">[reference B]</span>.<br>
+<br>
+Everything I ask from this point is in the context of this brand.<br>
+Confirm understanding and ask me for the first task.
+    </div>
+  </div>
+
+  <div class="prompt-group-head">Gemini — Creative Director Prompt</div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-head">
+      <span class="prompt-card-name">Logo Directions Generator</span>
+      <span class="prompt-card-goal">מייצר 3 פרומפטים לוגו מהבריף</span>
+    </div>
+    <div class="prompt-card-body">
+You are a creative director, brand designer.<br>
+Create a prompt for generative tools for logo concepts creation.<br>
+The logo is for a brand called <span class="ph">[Brand Name]</span>.<br>
+Read the brief and suggest <span class="kw">3 directions</span> for a logo.<br>
+Provide a <span class="ph">text response only</span>.
+    </div>
+  </div>
+
+  <div class="prompt-group-head">Google Flow — Logo Prompts (KŌRI Example)</div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-head">
+      <span class="prompt-card-name">Direction 1 — Monochromatic Minimalist</span>
+      <span class="prompt-card-goal">Japandi / NanoBanana model</span>
+    </div>
+    <div class="prompt-card-body">
+A minimalist and modern logo design for an artisanal ice cream<br>
+brand named <span class="kw">"KŌRI"</span>. Clean, elegant sans-serif typography<br>
+paired with a subtle abstract geometric icon — stylized ice crystal<br>
+or clean scoop silhouette. Soft minimalism, Japandi aesthetic.<br>
+Monochromatic palette: warm off-white and charcoal gray.<br>
+Studio lighting, flat vector style,<br>
+<span class="ph">isolated on a solid light gray background</span>, text response only.
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-head">
+      <span class="prompt-card-name">Direction 2 — Refined Organic</span>
+      <span class="prompt-card-goal">Clay texture / earth tones</span>
+    </div>
+    <div class="prompt-card-body">
+A modern, upscale logo for a premium ice cream brand called <span class="kw">"KŌRI"</span>.<br>
+Organic, fluid shapes resembling a smooth melting artisanal scoop,<br>
+rendered in a clean clay texture. Elegant, spaced-out typography.<br>
+Palette: soft sand tones, matte charcoal, accent of deep matcha green.<br>
+High-end culinary branding, minimalist style, vector logo,<br>
+<span class="ph">flat background</span>, text response only.
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-head">
+      <span class="prompt-card-name">Direction 3 — Bold Editorial</span>
+      <span class="prompt-card-goal">Typographic / architectural</span>
+    </div>
+    <div class="prompt-card-body">
+An editorial-style typographic logo for a luxury ice cream brand<br>
+named <span class="kw">"KŌRI"</span>. Bold yet elegant high-contrast serif typography,<br>
+with the Japanese Kanji for ice <span class="kw">(冰)</span> integrated as a small crisp<br>
+secondary element. Inspired by architectural magazines and<br>
+minimalist lifestyle brands. High contrast black and white design,<br>
+stark and powerful, flat vector icon, clean margins,<br>
+<span class="ph">isolated on white</span>, text response only.
+    </div>
+  </div>
+
+  <div class="prompt-group-head">GPT Image 2 — Brand Identity Board</div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-head">
+      <span class="prompt-card-name">Brand Identity Board</span>
+      <span class="prompt-card-goal">לוח מיתוג שלם 9:16</span>
+    </div>
+    <div class="prompt-card-body">
+ROLE: Senior brand designer creating a premium agency-grade brand identity board.<br>
+CONTEXT: Use the logo, colors, website structure, and brand direction as source material.<br>
+TASK: Create one ultra-clean vertical brand presentation board in exact <span class="ph">9:16 ratio</span>.<br>
+<br>
+STRUCTURE:<br>
+<span class="kw">Top 18%</span> — logo · brand essence · 4–5 keywords · 3 design principles<br>
+<span class="kw">Middle 32%</span> — color system with tonal expansion · typography system · visual language rules<br>
+<span class="kw">Bottom 50%</span> — 6–7 realistic branded applications (website hero, mobile UI,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;social post, poster, packaging, tote bag, signage)<br>
+<br>
+STYLE: Flat 2D editorial · white/soft neutral background · subtle grid · strong hierarchy<br>
+RULE: Applications must prove the system works — not just logo stickers on objects.
+    </div>
+  </div>
+
+  <div class="prompt-group-head">GPT Image 2 — Mockups</div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-head">
+      <span class="prompt-card-name">Art Director Mockup Prompt</span>
+      <span class="prompt-card-goal">3 מוקאפים מוגדרים ללא אנשים</span>
+    </div>
+    <div class="prompt-card-body">
+Act as an expert Art Director and Commercial Photographer.<br>
+Brand: <span class="ph">[Brand Name]</span> · Brief: <span class="ph">[Product Type / description]</span><br>
+<br>
+Suggest 3 distinct mockup placements. For each, write a detailed image prompt.<br>
+Constraints:<br>
+• <span class="kw">No people</span> — no hands, faces, or bodies. Product focus only.<br>
+• Branding: clean product styling, crisp logo placement.<br>
+• Every prompt must label: <span class="ph">Style</span>, <span class="ph">Colors</span>, <span class="ph">Composition</span>, <span class="ph">Vibe</span>.
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-head">
+      <span class="prompt-card-name">Social Post — 4 Variants</span>
+      <span class="prompt-card-goal">פוסטים מהמיתוג הקיים</span>
+    </div>
+    <div class="prompt-card-body">
+Based on the brand and visuals —<br>
+create <span class="kw">4 new social post designs</span> based on the current design.<br>
+<br>
+Keep the visual system consistent: same colors, same type treatment,<br>
+same grid logic. Each post should feel like part of the same feed.
+    </div>
+  </div>
+
+  <div class="prompt-group-head">Claude Code / Agent</div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-head">
+      <span class="prompt-card-name">First Message</span>
+      <span class="prompt-card-goal">פתיחת סשן עם Claude Code</span>
+    </div>
+    <div class="prompt-card-body">
+Hi Claude, what files can you see in this folder?<br>
+List the structure and tell me what you understand about this project.
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-head">
+      <span class="prompt-card-name">Brief Analysis Skill</span>
+      <span class="prompt-card-goal">יצירת Skill לניתוח בריף</span>
+    </div>
+    <div class="prompt-card-body">
+Consult the claude-code-guide and create a Skill named <span class="kw">analyze-brief</span><br>
+in .claude/skills/.<br>
+<br>
+Trigger: when I mention "analyze brief" or "brief analysis"<br>
+Task: read all PDFs in briefs/ folder<br>
+Output: 3 visual design directions with palette and typography<br>
+Save: outputs/brief-analysis.md<br>
+<br>
+Test it after creation with our current brief.
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-head">
+      <span class="prompt-card-name">Iterate</span>
+      <span class="prompt-card-goal">שיפור ואיטרציה</span>
+    </div>
+    <div class="prompt-card-body">
+Direction 2 is too conservative.<br>
+Push it further — more unexpected, while staying within brand colors.<br>
+Keep directions 1 and 3 exactly as they are.
+    </div>
+  </div>
+</section>
+
+</div><!-- /pane-01 -->
+
+<!-- ══════════════════════════════════════════════════
+     TAB PANE 02 — מפגש 02
+══════════════════════════════════════════════════ -->
+<div class="tab-pane" id="pane-02">
+
+<!-- ══ HERO 02 ════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-watermark"><span>02</span></div>
+  <div class="hero-top">
+    <div class="hero-eyebrow">פורמה · מפגש 02 · Zachi Diner / AI Factory</div>
+    <div class="hero-num">02</div>
+  </div>
+  <div class="hero-body">
+    <h1 class="hero-title">
+      System Over<br>Instinct
+      <em>Claude Code · Skills · Connections</em>
+    </h1>
+    <div class="hero-rule"></div>
+    <div class="hero-footer">
+      <p class="hero-desc">
+        מה שבנינו במפגש הראשון — עכשיו נהפוך אותו למערכת. Skills, CLAUDE.md, חיבורים ל-Figma ול-Adobe — הסטודיו מתחיל לפעול לבד.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span class="label">כלים</span>
+          <span class="val">Claude Code · Obsidian · Figma</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="label">מפגש</span>
+          <span class="val">02 מתוך 3</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="label">שנה</span>
+          <span class="val">2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AGENDA 02 ══════════════════════════════════════ -->
+<section class="s" id="agenda02">
+  <span class="s-num">01</span>
+  <div class="s-label">סדר יום</div>
+  <h2 class="s-title">מה נעשה היום — <span class="hl">מפגש 02</span></h2>
+  <p class="s-intro">ממה שיצרנו ידנית — לתשתית שחוזרת על עצמה. כל תחנה מוסיפה שכבה לסטודיו ה-AI שלכם</p>
+
+  <div class="agenda">
+    <div class="agenda-item">
+      <span class="agenda-n">01</span>
+      <span class="agenda-text">
+        חזרה קצרה — מה עשינו עד עכשיו
+        <span class="agenda-sub">Gemini Flow, GPT Image 2, הפילוסופיה</span>
+      </span>
+      <span class="agenda-tag theory">theory</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">02</span>
+      <span class="agenda-text">
+        מ-Design System לרכיבים
+        <span class="agenda-sub">CLAUDE.md + Skills = מערכת עיצוב חדשה</span>
+      </span>
+      <span class="agenda-tag theory">theory</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">03</span>
+      <span class="agenda-text">
+        התקנות — Claude Code + Obsidian
+        <span class="agenda-sub">סביבת עבודה, Node.js, טרמינל, פרויקט ראשון</span>
+      </span>
+      <span class="agenda-tag setup">setup</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">04</span>
+      <span class="agenda-text">
+        מה כל הרכיבים במערכת?
+        <span class="agenda-sub">Skills, Connections, CLAUDE.md, Files</span>
+      </span>
+      <span class="agenda-tag theory">theory</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">05</span>
+      <span class="agenda-text">
+        דברים שכדאי לדעת
+        <span class="agenda-sub">טיפים, שגיאות נפוצות, best practices</span>
+      </span>
+      <span class="agenda-tag theory">theory</span>
+    </div>
+    <div class="agenda-item is-break">
+      <span class="agenda-n">—</span>
+      <span class="agenda-text">הפסקה</span>
+      <span class="agenda-tag brk">break</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">06</span>
+      <span class="agenda-text">
+        תכנון פרויקט — בניית התיקייה
+        <span class="agenda-sub">מבנה תיקיות, CLAUDE.md לפרויקט חדש</span>
+      </span>
+      <span class="agenda-tag hands">hands-on</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">07</span>
+      <span class="agenda-text">
+        בניית יכולות — Skills
+        <span class="agenda-sub">יצירת Skill ראשון, טריגרים, בדיקה</span>
+      </span>
+      <span class="agenda-tag hands">hands-on</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">08</span>
+      <span class="agenda-text">
+        חיבור לפיגמה / לאדובי
+        <span class="agenda-sub">Figma MCP + Adobe Firefly — Claude קורא עיצובים</span>
+      </span>
+      <span class="agenda-tag hands">hands-on</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">09</span>
+      <span class="agenda-text">
+        חיבור למודלים נוספים
+        <span class="agenda-sub">FAL.ai, OpenRouter — הרחבת יכולות הדימויים</span>
+      </span>
+      <span class="agenda-tag hands">hands-on</span>
+    </div>
+    <div class="agenda-item">
+      <span class="agenda-n">10</span>
+      <span class="agenda-text">
+        סיכום
+        <span class="agenda-sub">מה בנינו, מה הלאה, מפגש 03</span>
+      </span>
+      <span class="agenda-tag theory">theory</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATEMENT: SYSTEM ══════════════════════════════ -->
+<section class="statement">
+  <div class="statement-kicker">הפילוסופיה · The Philosophy</div>
+  <div class="statement-big">
+    System<br>
+    <span class="dim">Over</span><br>
+    Instinct.
+  </div>
+  <p class="statement-sub">
+    הכלי הטוב ביותר הוא זה שעובד גם כשאתם לא שם. בנו מערכת, לא זיכרון שרירותי.
+  </p>
+</section>
+
+<!-- ══ RECAP ══════════════════════════════════════════ -->
+<section class="s" id="recap02">
+  <span class="s-num">01</span>
+  <div class="s-label">חזרה קצרה</div>
+  <h2 class="s-title">מפגש 01 — <span class="hl">מה לקחנו איתנו</span></h2>
+  <p class="s-intro">שלושה כלים, ווורקפלאו אחד. מה עבד, מה כדאי לשכלל, ומה נבנה עליו עכשיו</p>
+
+  <div class="cycle" style="margin-bottom:32px;">
+    <div class="cycle-step" style="border-top-color:var(--blue);">
+      <div class="cs-n">→</div>
+      <div class="cs-en">Gemini</div>
+      <div class="cs-he">Creative Director — פרומפטים לוגו</div>
+    </div>
+    <div class="cycle-step" style="border-top-color:var(--blue);">
+      <div class="cs-n">→</div>
+      <div class="cs-en">Google Flow</div>
+      <div class="cs-he">NanoBanana — לוגו ויקטורי</div>
+    </div>
+    <div class="cycle-step" style="border-top-color:var(--blue);">
+      <div class="cs-n">→</div>
+      <div class="cs-en">GPT Image 2</div>
+      <div class="cs-he">Brand Identity Board + מוקאפים</div>
+    </div>
+    <div class="cycle-step" style="border-top-color:rgba(52,81,232,.3);">
+      <div class="cs-n">NOW</div>
+      <div class="cs-en">Claude Code</div>
+      <div class="cs-he">מערכת שחוזרת על עצמה</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>הלאקאוויי המרכזי:</strong> Context → Plan → Generate → Iterate. הסדר הזה עובד עם כל כלי. עכשיו נבנה תשתית שמייצרת את הסדר אוטומטית.
+  </div>
+</section>
+
+<!-- ══ DESIGN SYSTEM → COMPONENTS ════════════════════ -->
+<section class="s-blue" id="system02">
+  <span class="s-num">02</span>
+  <div class="s-label">מושגים</div>
+  <h2 class="s-title">מ-Design System — <span class="hl">לרכיבים חכמים</span></h2>
+  <p class="s-intro">Design System בפיגמה = רכיבים ויזואליים קבועים. Design System עם AI = יכולות דינמיות שמגיבות להקשר. הגישה משתנה — לא הטרמינולוגיה</p>
+
+  <div class="two-col">
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">ה-Design System הישן</div>
+      <div class="versus" style="grid-template-columns:1fr;border:1px solid var(--rule-blue);">
+        <div class="versus-card v-assistant" style="background:rgba(255,255,255,.06);border:none;">
+          <div class="versus-label" style="color:var(--cream-dim);">Figma Design System</div>
+          <div class="versus-title" style="color:var(--cream);">רכיבים סטטיים</div>
+          <div class="versus-desc" style="color:var(--cream-dim);">Button, Card, Modal — כל רכיב מוגדר ידנית. מעדכנים בפיגמה, מייצאים. עקבי אבל קשיח.</div>
+          <div class="versus-examples" style="margin-top:16px;">
+            <div class="versus-ex" style="background:rgba(255,255,255,.06);color:var(--cream-dim);">Component Library · Style Guide</div>
+            <div class="versus-ex" style="background:rgba(255,255,255,.06);color:var(--cream-dim);">Design Tokens · Spacing System</div>
+            <div class="versus-ex" style="background:rgba(255,255,255,.06);color:var(--cream-dim);">Documentation · Storybook</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">ה-Design System החדש</div>
+      <div class="system-grid">
+        <div class="sys-card">
+          <div class="sys-n">01 — Context</div>
+          <div class="sys-title">CLAUDE.md</div>
+          <div class="sys-desc">הבריף שקלוד קורא בתחילת כל שיחה. מחליף את Style Guide — אבל חי ומגיב.</div>
+          <div class="sys-file">brand/colors.md<br>brand/voice.md<br>briefs/*.pdf</div>
+        </div>
+        <div class="sys-card">
+          <div class="sys-n">02 — Capabilities</div>
+          <div class="sys-title">Skills</div>
+          <div class="sys-desc">פרומפטים שמורים כ-.md. "analyze-brief" = רכיב שעובד. מתכנסים, מתפתחים.</div>
+          <div class="sys-file">.claude/skills/<br>analyze-brief.md<br>brand-direction.md</div>
+        </div>
+        <div class="sys-card">
+          <div class="sys-n">03 — Connections</div>
+          <div class="sys-title">MCP Servers</div>
+          <div class="sys-desc">גשרים לכלים חיצוניים. Figma, Adobe, Notion, Fal.ai — קלוד מדבר עם כולם.</div>
+          <div class="sys-file">figma-mcp<br>adobe-mcp<br>notion-mcp</div>
+        </div>
+        <div class="sys-card">
+          <div class="sys-n">04 — Assets</div>
+          <div class="sys-title">Project Files</div>
+          <div class="sys-desc">התיקיות שקלוד קורא. brand/, briefs/, references/, outputs/ — כל נכס נגיש.</div>
+          <div class="sys-file">brand/ · briefs/<br>references/<br>outputs/</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ INSTALLATION ════════════════════════════════════ -->
+<section class="s-white" id="setup02">
+  <span class="s-num">03</span>
+  <div class="s-label">התקנות</div>
+  <h2 class="s-title">Claude Code + Obsidian — <span class="hl">סביבת עבודה</span></h2>
+  <p class="s-intro">חמישה שלבים מהמכונה הנקייה לסטודיו AI מלא. הכל דרך הטרמינל — נשמע מפחיד, הרבה יותר פשוט ממה שנראה</p>
+
+  <div class="two-col" style="gap:40px;align-items:start;">
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">Claude Code</div>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div class="install-row">
+          <div class="install-n">01</div>
+          <div class="install-body">
+            <div class="install-title">התקינו Node.js</div>
+            <div class="install-sub">nodejs.org → LTS → הורידו והתקינו</div>
+          </div>
+        </div>
+        <div class="install-row">
+          <div class="install-n">02</div>
+          <div class="install-body">
+            <div class="install-title">פתחו טרמינל</div>
+            <div class="install-sub">Mac: Cmd+Space → "Terminal" / Windows: PowerShell</div>
+          </div>
+        </div>
+        <div class="install-row">
+          <div class="install-n">03</div>
+          <div class="install-body">
+            <div class="install-title">התקינו Claude Code</div>
+            <div class="install-sub" style="font-family:'JetBrains Mono',monospace;">npm install -g @anthropic-ai/claude-code</div>
+          </div>
+        </div>
+        <div class="install-row">
+          <div class="install-n">04</div>
+          <div class="install-body">
+            <div class="install-title">הריצו Claude</div>
+            <div class="install-sub" style="font-family:'JetBrains Mono',monospace;">cd [project-folder] → claude</div>
+          </div>
+        </div>
+        <div class="install-row">
+          <div class="install-n">05</div>
+          <div class="install-body">
+            <div class="install-title">הזינו API Key</div>
+            <div class="install-sub">anthropic.com/settings → API Keys → Copy</div>
+          </div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:20px;">
+        <strong>Mac Git Error?</strong> הריצו <code style="background:var(--bg2);padding:2px 8px;border-radius:3px;font-size:10px;font-family:JetBrains Mono,monospace">xcode-select --install</code> בטרמינל לפני שמתחילים.
+      </div>
+    </div>
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">Obsidian — ה허브של הפרויקט</div>
+      <div class="workflow">
+        <div class="wf-step">
+          <div class="wf-n" style="color:rgba(0,0,0,.06);">↓</div>
+          <div class="wf-body">
+            <div class="wf-title">הורידו Obsidian</div>
+            <div class="wf-desc">obsidian.md → גרסה חינמית. זה ה-"Vault" שיהפוך לפרויקט שלכם — תיקייה רגילה עם קבצי .md.</div>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-n" style="color:rgba(0,0,0,.06);">↓</div>
+          <div class="wf-body">
+            <div class="wf-title">צרו תיקיית פרויקט בתוך ה-Vault</div>
+            <div class="wf-desc">כל מותג = תיקייה. Obsidian מציג אותה, Claude Code עובד מתוכה. הסינרגיה: ניהול ידני + AI אוטומטי.</div>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-n" style="color:rgba(0,0,0,.06);">↓</div>
+          <div class="wf-body">
+            <div class="wf-title">הפעילו Claude מתוך התיקייה</div>
+            <div class="wf-desc">בטרמינל: <code style="background:var(--bg2);padding:1px 6px;border-radius:2px;font-size:10px;font-family:JetBrains Mono,monospace">cd path/to/brand-project</code> ואז <code style="background:var(--bg2);padding:1px 6px;border-radius:2px;font-size:10px;font-family:JetBrains Mono,monospace">claude</code>. הוא קורא הכל.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SYSTEM COMPONENTS ══════════════════════════════ -->
+<section class="s" id="components02">
+  <span class="s-num">04</span>
+  <div class="s-label">הרכיבים</div>
+  <h2 class="s-title">מה כל הרכיבים — <span class="hl">Skills · Connections · Files</span></h2>
+  <p class="s-intro">ארבעה רכיבים שמרכיבים יחד את מערכת ה-AI Studio שלכם. כל אחד ממלא תפקיד ספציפי — ביחד הם יוצרים זרימה שחוזרת על עצמה</p>
+
+  <div class="two-col" style="gap:40px;margin-bottom:40px;">
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">CLAUDE.md — הבריף שקלוד קורא תמיד</div>
+      <p style="font-size:14px;color:var(--ink2);line-height:1.75;margin-bottom:16px;">הקובץ הזה הוא ה-"DNA" של הפרויקט שלכם. קלוד קורא אותו <strong>בתחילת כל שיחה</strong> — אין צורך לחזור על הקשר בכל פעם.</p>
+      <div class="prompt-box">
+        <div class="prompt-box-header">
+          <div class="prompt-dot"></div>
+          <span class="prompt-box-label">CLAUDE.md — מבנה מומלץ</span>
+        </div>
+        <div class="prompt-box-body">
+# <span class="ph">[Brand Name]</span> — Project Context<br>
+<br>
+## Brand<br>
+<span class="kw">Name:</span> <span class="ph">[brand name]</span><br>
+<span class="kw">Category:</span> <span class="ph">[industry]</span><br>
+<span class="kw">Tone:</span> <span class="ph">[3 adjectives]</span><br>
+<span class="kw">Visual DNA:</span> <span class="ph">[reference A]</span> meets <span class="ph">[reference B]</span><br>
+<br>
+## Key Files<br>
+- brand/logo.svg — primary logo<br>
+- briefs/*.pdf — client briefs<br>
+- outputs/ — save everything here<br>
+<br>
+## Rules<br>
+- Always ask before deleting files<br>
+- Output format: Markdown unless specified<br>
+- Image model: <span class="ph">[fal-ai/recraft/v4]</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">Skills — יכולות שנשמרות</div>
+      <p style="font-size:14px;color:var(--ink2);line-height:1.75;margin-bottom:16px;">Skill הוא פרומפט שמור כקובץ <code style="background:var(--bg2);padding:1px 6px;border-radius:2px;font-size:10px;">.md</code> בתיקיית <code style="background:var(--bg2);padding:1px 6px;border-radius:2px;font-size:10px;">.claude/skills/</code>. כשאתם מזכירים את הטריגר — קלוד מריץ אותו אוטומטית.</p>
+      <div class="prompt-box">
+        <div class="prompt-box-header">
+          <div class="prompt-dot"></div>
+          <span class="prompt-box-label">.claude/skills/analyze-brief.md</span>
+        </div>
+        <div class="prompt-box-body">
+<span class="kw">Trigger:</span> "analyze brief" / "brief analysis"<br>
+<span class="kw">Task:</span> Read all PDFs in briefs/ folder<br>
+<span class="kw">Output:</span> 3 visual design directions<br>
+&nbsp;&nbsp;- Color palette (5 hex values each)<br>
+&nbsp;&nbsp;- Typography recommendation<br>
+&nbsp;&nbsp;- One reference brand<br>
+&nbsp;&nbsp;- 2-sentence visual mood<br>
+<span class="kw">Save:</span> outputs/brief-analysis.md<br>
+<span class="kw">Then:</span> Ask which direction to develop further
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="s-label" style="margin-bottom:16px;">MCP Servers — חיבורים לכלים חיצוניים</div>
+  <div class="tools-row" style="margin-bottom:2px;">
+    <div class="tools-label-col">
+      <div class="era">Figma</div>
+      <div class="era-he">קריאת עיצובים</div>
+    </div>
+    <div class="tools-content-col">
+      <div class="tool-chips">
+        <span class="chip">קריאת Component Tree</span>
+        <span class="chip">ייצוא Tokens</span>
+        <span class="chip">ניתוח עיצוב</span>
+        <span class="chip bold">figma-mcp</span>
+      </div>
+    </div>
+  </div>
+  <div class="tools-row" style="margin-bottom:2px;">
+    <div class="tools-label-col">
+      <div class="era">Adobe</div>
+      <div class="era-he">יצירת נכסים</div>
+    </div>
+    <div class="tools-content-col">
+      <div class="tool-chips">
+        <span class="chip">Firefly Generation</span>
+        <span class="chip">Remove Background</span>
+        <span class="chip">Generative Fill</span>
+        <span class="chip bold">adobe-mcp</span>
+      </div>
+    </div>
+  </div>
+  <div class="tools-row">
+    <div class="tools-label-col active-col">
+      <div class="era">Models</div>
+      <div class="era-he">מודלים נוספים</div>
+    </div>
+    <div class="tools-content-col active-content">
+      <div class="tool-chips">
+        <span class="chip active-chip">fal-ai/recraft/v4</span>
+        <span class="chip active-chip">fal-ai/flux/dev</span>
+        <span class="chip active-chip">OpenRouter</span>
+        <span class="chip active-chip">NanoBanana (via Flow)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TIPS ════════════════════════════════════════════ -->
+<section class="s-blue" id="tips02">
+  <span class="s-num">05</span>
+  <div class="s-label">דברים שכדאי לדעת</div>
+  <h2 class="s-title">לפני שמתחילים — <span class="hl">טיפים ומלכודות</span></h2>
+  <p class="s-intro">הדברים שאף אחד לא אומר מראש — ושמי שיודע אותם חוסך שעות של בלבול</p>
+
+  <div class="tip-list">
+    <div class="tip-row" style="background:var(--white);">
+      <div class="tip-icon">Mac</div>
+      <div class="tip-body">
+        <div class="tip-title">שגיאת Git ב-Mac? פתרון חד-שורתי</div>
+        <div class="tip-sub">xcode-select --install → אשרו → מחכים → גמרנו</div>
+      </div>
+    </div>
+    <div class="tip-row" style="background:var(--white);">
+      <div class="tip-icon">Win</div>
+      <div class="tip-body">
+        <div class="tip-title">Windows — Git חייב להיות מותקן</div>
+        <div class="tip-sub">git-scm.com → הורידו → הריצו Installer → Default settings</div>
+      </div>
+    </div>
+    <div class="tip-row" style="background:var(--white);">
+      <div class="tip-icon">→</div>
+      <div class="tip-body">
+        <div class="tip-title">ידנית קודם — אוטומטי אחר כך</div>
+        <div class="tip-sub">בדקו שהפרומפט עובד 2 פעמים לפני שבונים Skill ממנו</div>
+      </div>
+    </div>
+    <div class="tip-row" style="background:var(--white);">
+      <div class="tip-icon">!</div>
+      <div class="tip-body">
+        <div class="tip-title">קלוד לא זוכר בין שיחות</div>
+        <div class="tip-sub">כל מה שחשוב — שמרו ב-CLAUDE.md. אחרת זה נעלם.</div>
+      </div>
+    </div>
+    <div class="tip-row" style="background:var(--white);">
+      <div class="tip-icon">∅</div>
+      <div class="tip-body">
+        <div class="tip-title">פרומפט ארוך ≠ תוצאה טובה יותר</div>
+        <div class="tip-sub">עדיף שיחה בשלבים על פרומפט ענקי אחד. Context builds.</div>
+      </div>
+    </div>
+    <div class="tip-row" style="background:var(--white);">
+      <div class="tip-icon">⌘</div>
+      <div class="tip-body">
+        <div class="tip-title">משהו לא עבד? שאלו ישירות</div>
+        <div class="tip-sub">"What went wrong? Show me the error and try again" — עובד תמיד</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout light-on-blue" style="margin-top:32px;">
+    <strong>הכלל הכי חשוב:</strong> Claude Code הוא כלי — לא מאגי. תנו לו מבנה ברור, הקשר מלא, ויעד מדיד. כך מקבלים תוצאות עקביות.
+  </div>
+</section>
+
+<!-- ══ STATEMENT: BUILD ONCE ══════════════════════════ -->
+<section class="statement">
+  <div class="statement-kicker">Build Philosophy</div>
+  <div class="statement-big">
+    Build<br>
+    <span class="dim">Once,</span><br>
+    Reuse Always.
+  </div>
+  <p class="statement-sub">
+    כל Skill שאתם בונים היום — עובד על כל לקוח, כל פרויקט, כל בריף. זה ההבדל בין מלאכה לתשתית.
+  </p>
+</section>
+
+<!-- ══ PROJECT PLANNING ═══════════════════════════════ -->
+<section class="s-white" id="project02">
+  <span class="s-num">06</span>
+  <div class="s-label">תכנון פרויקט</div>
+  <h2 class="s-title">בניית התיקייה — <span class="hl">הבסיס לכל פרויקט</span></h2>
+  <p class="s-intro">מבנה תיקיות נכון = קלוד עובד טוב יותר. תנו לו מקום לחפש בריפים, לשמור פלטים, למצוא נכסי מותג</p>
+
+  <div class="two-col" style="gap:40px;align-items:start;">
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">מבנה מומלץ</div>
+      <div class="code-block" style="background:var(--ink);color:rgba(255,255,255,.65);">
+<span class="path">my-brand-project/</span><br>
+├── <span class="path">.claude/</span>           <span class="comment">← קלוד קורא זה תמיד</span><br>
+│   ├── CLAUDE.md           <span class="comment">← הוראות קבועות לפרויקט</span><br>
+│   └── skills/             <span class="comment">← Skills מותאמות</span><br>
+│       ├── analyze-brief.md<br>
+│       └── brand-direction.md<br>
+├── <span class="path">brand/</span>             <span class="comment">← לוגו, צבעים, פונטים</span><br>
+│   ├── logo.svg<br>
+│   └── brand-guidelines.md<br>
+├── <span class="path">briefs/</span>            <span class="comment">← PDFs, בריפים, צ'אטים</span><br>
+├── <span class="path">references/</span>        <span class="comment">← השראה, מתחרים</span><br>
+└── <span class="path">outputs/</span>           <span class="comment">← כל הפלטים שנוצרו</span>
+      </div>
+    </div>
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">הפרומפטים לפתיחת פרויקט</div>
+      <div class="workflow">
+        <div class="wf-step">
+          <div class="wf-n" style="color:rgba(0,0,0,.06);">01</div>
+          <div class="wf-body">
+            <div class="wf-title">פרומפט ראשון — הכרות עם הפרויקט</div>
+            <div class="wf-desc">תמיד תתחילו עם זה. קלוד יספר לכם מה הוא רואה ומה הוא מבין על הפרויקט.</div>
+            <div class="prompt-inline">
+Hi Claude, what files can you see in this folder?<br>
+List the structure and tell me what you understand about this project.
+            </div>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-n" style="color:rgba(0,0,0,.06);">02</div>
+          <div class="wf-body">
+            <div class="wf-title">פרומפט שני — יצירת CLAUDE.md</div>
+            <div class="wf-desc">בקשו מקלוד ליצור CLAUDE.md על בסיס מה שהוא ראה + מה שאתם מוסיפים.</div>
+            <div class="prompt-inline">
+Create a CLAUDE.md for this brand project.<br>
+Brand name: <span style="color:var(--blue);">[Brand Name]</span><br>
+Include: project name, brand values, key files locations,<br>
+output conventions, and model preferences.<br>
+Base it on the files you can see in this folder.
+            </div>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-n" style="color:rgba(0,0,0,.06);">03</div>
+          <div class="wf-body">
+            <div class="wf-title">פרומפט שלישי — ניתוח בריף ראשוני</div>
+            <div class="wf-desc">אחרי ש-CLAUDE.md קיים — בקשו ניתוח בריף ראשוני ישירות.</div>
+            <div class="prompt-inline">
+Read the brief in briefs/ and give me:<br>
+1. The core brand challenge in one sentence<br>
+2. Three possible visual territories<br>
+3. Two competitor brands I should research<br>
+<br>
+Save to outputs/initial-analysis.md
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SKILLS ══════════════════════════════════════════ -->
+<section class="s" id="skills02">
+  <span class="s-num">07</span>
+  <div class="s-label">בניית יכולות</div>
+  <h2 class="s-title">Skills — <span class="hl">הרכיבים של הסטודיו</span></h2>
+  <p class="s-intro">Skill הוא פרומפט שמור. אחרי שניסיתם ידנית ועובד — שמרו אותו כ-Skill ושחררו אותו לעבוד לבד</p>
+
+  <div class="two-col" style="gap:40px;margin-bottom:48px;align-items:start;">
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">איך יוצרים Skill</div>
+      <div class="workflow">
+        <div class="wf-step">
+          <div class="wf-n">01</div>
+          <div class="wf-body">
+            <div class="wf-title">בקשו מקלוד ליצור את ה-Skill</div>
+            <div class="wf-desc">קלוד יוצר את הקובץ ב-.claude/skills/ ומסביר מה הוא בנה.</div>
+            <div class="prompt-box">
+              <div class="prompt-box-header">
+                <div class="prompt-dot"></div>
+                <span class="prompt-box-label">Skill Creation Prompt</span>
+              </div>
+              <div class="prompt-box-body">
+Consult the claude-code-guide and create a Skill<br>
+named <span class="kw">analyze-brief</span> in .claude/skills/.<br>
+<br>
+<span class="kw">Trigger:</span> when I mention "analyze brief"<br>
+<span class="kw">Task:</span> read all PDFs in briefs/ folder<br>
+<span class="kw">Output:</span> 3 visual design directions:<br>
+&nbsp;&nbsp;- Color palette (5 hex values)<br>
+&nbsp;&nbsp;- Typography recommendation<br>
+&nbsp;&nbsp;- 2-sentence visual mood<br>
+<span class="kw">Save:</span> outputs/brief-analysis.md<br>
+<br>
+Test it after creation with our current brief.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-n">02</div>
+          <div class="wf-body">
+            <div class="wf-title">בדקו את ה-Skill</div>
+            <div class="wf-desc">רק כתבו את הטריגר — וקלוד יריץ את כל ה-workflow אוטומטית.</div>
+            <div class="prompt-box">
+              <div class="prompt-box-header">
+                <div class="prompt-dot"></div>
+                <span class="prompt-box-label">Trigger Test</span>
+              </div>
+              <div class="prompt-box-body">
+analyze brief
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-n">03</div>
+          <div class="wf-body">
+            <div class="wf-title">שפרו ואיטרציה</div>
+            <div class="wf-desc">אם הכיוון אחד חלש מדי — אמרו לקלוד לשפר רק אותו, בלי לגעת בשאר.</div>
+            <div class="prompt-box">
+              <div class="prompt-box-header">
+                <div class="prompt-dot"></div>
+                <span class="prompt-box-label">Iteration Prompt</span>
+              </div>
+              <div class="prompt-box-body">
+Direction 2 is too conservative.<br>
+Push it further — more unexpected,<br>
+while staying within brand colors.<br>
+Keep directions 1 and 3 exactly as they are.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">Skills שכדאי לבנות</div>
+      <div class="agenda">
+        <div class="agenda-item">
+          <span class="agenda-n" style="color:var(--blue);">→</span>
+          <span class="agenda-text">
+            analyze-brief
+            <span class="agenda-sub">קריאת PDFs → 3 כיוונים ויזואליים</span>
+          </span>
+          <span class="agenda-tag hands">core</span>
+        </div>
+        <div class="agenda-item">
+          <span class="agenda-n" style="color:var(--blue);">→</span>
+          <span class="agenda-text">
+            brand-direction
+            <span class="agenda-sub">בחירת כיוון → מדריך ויזואלי מלא</span>
+          </span>
+          <span class="agenda-tag hands">core</span>
+        </div>
+        <div class="agenda-item">
+          <span class="agenda-n" style="color:var(--blue);">→</span>
+          <span class="agenda-text">
+            generate-logo-prompts
+            <span class="agenda-sub">בריף → 3 פרומפטים לוגו ל-Flow</span>
+          </span>
+          <span class="agenda-tag theory">advanced</span>
+        </div>
+        <div class="agenda-item">
+          <span class="agenda-n" style="color:var(--blue);">→</span>
+          <span class="agenda-text">
+            mockup-generator
+            <span class="agenda-sub">לוגו + מותג → פרומפטים ל-GPT Image 2</span>
+          </span>
+          <span class="agenda-tag theory">advanced</span>
+        </div>
+        <div class="agenda-item">
+          <span class="agenda-n" style="color:var(--blue);">→</span>
+          <span class="agenda-text">
+            competitor-analysis
+            <span class="agenda-sub">שם מותג → ניתוח 5 מתחרים + white space</span>
+          </span>
+          <span class="agenda-tag setup">optional</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy">
+    <strong>אנלוגיה:</strong> Skill הוא כמו action ב-Photoshop — רשמתם פעם אחת, לוחצים F3, מקבלים תוצאה. רק שבמקום macro — אתם כותבים בעברית.
+  </div>
+</section>
+
+<!-- ══ FIGMA / ADOBE CONNECTIONS ════════════════════════ -->
+<section class="s-blue" id="figma02">
+  <span class="s-num">08</span>
+  <div class="s-label">חיבורים</div>
+  <h2 class="s-title">Figma + Adobe — <span class="hl">קלוד קורא עיצובים</span></h2>
+  <p class="s-intro">MCP Server = גשר בין קלוד לכלי חיצוני. קלוד מחובר לפיגמה → יכול לקרוא Component Tree, Design Tokens, ולנתח עיצובים ישירות בשיחה</p>
+
+  <div class="workflow">
+    <div class="wf-step">
+      <div class="wf-n">01</div>
+      <div class="wf-body">
+        <div class="wf-title">פתחו Claude Desktop Settings</div>
+        <div class="wf-desc">Claude Desktop (לא Claude.ai) → Settings → MCP Servers → Add Server. זה מאפשר לקלוד להתחבר לכלים חיצוניים.</div>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n">02</div>
+      <div class="wf-body">
+        <div class="wf-title">הוסיפו Figma MCP</div>
+        <div class="wf-desc">קבלו Personal Access Token מ-Figma (Settings → Security → Access Tokens) ובצעו את ה-setup.</div>
+        <div class="prompt-box">
+          <div class="prompt-box-header">
+            <div class="prompt-dot"></div>
+            <span class="prompt-box-label">Claude → Figma — First Prompt</span>
+          </div>
+          <div class="prompt-box-body">
+Connect to Figma file: <span class="ph">[Figma File URL]</span><br>
+<br>
+Read the component structure of the current page.<br>
+List all components with their variants and properties.<br>
+Identify the design tokens: colors, spacing, typography.<br>
+<br>
+Save the component inventory to outputs/figma-audit.md
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n">03</div>
+      <div class="wf-body">
+        <div class="wf-title">Adobe Firefly MCP — יצירת נכסים</div>
+        <div class="wf-desc">Claude מתחבר לאדובי ומייצר נכסים ישירות. Remove Background, Generative Fill, Firefly Generation — הכל דרך פרומפט.</div>
+        <div class="prompt-box">
+          <div class="prompt-box-header">
+            <div class="prompt-dot"></div>
+            <span class="prompt-box-label">Claude → Adobe Firefly</span>
+          </div>
+          <div class="prompt-box-body">
+Using Adobe Firefly, generate a brand hero image for <span class="ph">[Brand Name]</span>.<br>
+Style: <span class="ph">[direction from analyze-brief]</span><br>
+Dimensions: 1920×1080<br>
+<br>
+Save to brand/hero-01.jpg<br>
+Then remove the background and save brand/hero-01-nobg.png
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n">04</div>
+      <div class="wf-body">
+        <div class="wf-title">Claude קורא עיצוב ומציע שיפורים</div>
+        <div class="wf-desc">זה הכוח האמיתי — קלוד מנתח מה קיים בפיגמה ומציע שיפורים עיצוביים ספציפיים.</div>
+        <div class="prompt-box">
+          <div class="prompt-box-header">
+            <div class="prompt-dot"></div>
+            <span class="prompt-box-label">Design Review via Figma MCP</span>
+          </div>
+          <div class="prompt-box-body">
+Looking at the current Figma file —<br>
+compare the design against our brand guidelines in CLAUDE.md.<br>
+<br>
+Identify:<br>
+1. Color deviations from the brand palette<br>
+2. Typography inconsistencies<br>
+3. Spacing violations<br>
+<br>
+Suggest specific Figma changes for each issue found.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout light-on-blue">
+    <strong>MCP = API בלי API.</strong> לא צריך לכתוב קוד — קלוד מתחבר לפיגמה, אדובי, נושן, ועוד עשרות כלים ישירות מהשיחה. אתם מבקשים בעברית, קלוד מריץ בקוד.
+  </div>
+</section>
+
+<!-- ══ ADDITIONAL MODELS ══════════════════════════════ -->
+<section class="s-white" id="models02">
+  <span class="s-num">09</span>
+  <div class="s-label">מודלים נוספים</div>
+  <h2 class="s-title">FAL.ai + OpenRouter — <span class="hl">הרחבת יכולות</span></h2>
+  <p class="s-intro">Claude Code מעולה לקוד ותכנון — אבל יצירת תמונות מצריכה מודלים ייעודיים. FAL.ai נותן גישה לעשרות מודלים טובים בעלות נמוכה</p>
+
+  <div class="two-col" style="gap:40px;align-items:start;margin-bottom:40px;">
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">FAL.ai — מודלי תמונה</div>
+      <div class="tools-row" style="border-radius:6px;margin-bottom:8px;">
+        <div class="tools-label-col" style="background:var(--bg2);">
+          <div class="era" style="font-size:14px;">Recraft v4</div>
+          <div class="era-he">ווקטורים ולוגואים</div>
+        </div>
+        <div class="tools-content-col">
+          <div style="font-size:12px;color:var(--ink2);line-height:1.6;">המודל הטוב ביותר ל-SVG, לוגואים ונכסים ווקטוריים. מייצר <strong>vector-ready</strong> ישירות.</div>
+        </div>
+      </div>
+      <div class="tools-row" style="border-radius:6px;margin-bottom:8px;">
+        <div class="tools-label-col" style="background:var(--bg2);">
+          <div class="era" style="font-size:14px;">Flux Dev</div>
+          <div class="era-he">תמונות כלליות</div>
+        </div>
+        <div class="tools-content-col">
+          <div style="font-size:12px;color:var(--ink2);line-height:1.6;">גמיש, מהיר, איכותי. מצוין למוקאפים, lifestyle shots, brand imagery.</div>
+        </div>
+      </div>
+      <div class="tools-row" style="border-radius:6px;">
+        <div class="tools-label-col active-col">
+          <div class="era" style="font-size:14px;">MIKA App</div>
+          <div class="era-he">ה-Pipeline</div>
+        </div>
+        <div class="tools-content-col active-content">
+          <div style="font-size:12px;color:var(--ink2);line-height:1.6;">מוריד מפתח FAL.ai מ-fal.ai → Settings בתוך MIKA → כל המודלים זמינים.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="s-label" style="margin-bottom:16px;">OpenRouter — גישה לכל מודל</div>
+      <p style="font-size:14px;color:var(--ink2);line-height:1.75;margin-bottom:16px;">OpenRouter מאחד את כל המודלים — Claude, GPT, Gemini, Llama, Mixtral — תחת API אחד. אתם בוחרים לפי צורך ותקציב.</p>
+      <div class="cycle-ai" style="grid-template-columns:repeat(3,1fr);">
+        <div class="cai-step">
+          <div class="cai-name">Claude</div>
+          <div class="cai-tools">Sonnet · Haiku · Opus</div>
+        </div>
+        <div class="cai-step">
+          <div class="cai-name">GPT</div>
+          <div class="cai-tools">4o · 4o-mini · o1</div>
+        </div>
+        <div class="cai-step">
+          <div class="cai-name">Gemini</div>
+          <div class="cai-tools">2.0 Flash · Pro</div>
+        </div>
+        <div class="cai-step">
+          <div class="cai-name">Llama</div>
+          <div class="cai-tools">3.3 70B · 3.1</div>
+        </div>
+        <div class="cai-step">
+          <div class="cai-name">Mistral</div>
+          <div class="cai-tools">Large · Nemo</div>
+        </div>
+        <div class="cai-step">
+          <div class="cai-name">Qwen</div>
+          <div class="cai-tools">2.5 72B · VL</div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:16px;">
+        <strong>שימוש ב-MIKA:</strong> Settings → LLM Model → בחרו מ-OpenRouter. Image Model → בחרו מ-FAL. כל שינוי מיידי.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SUMMARY 02 ══════════════════════════════════════ -->
+<section class="s-blue" id="summary02">
+  <span class="s-num">10</span>
+  <div class="s-label">סיכום</div>
+  <h2 class="s-title">מה בנינו — <span class="hl">ומה הלאה</span></h2>
+  <p class="s-intro">שני מפגשים, כלי אחד: תשתית שעובדת. עכשיו יש לכם Design System שמריץ את עצמו</p>
+
+  <div class="cycle" style="margin-bottom:48px;">
+    <div class="cycle-step" style="background:rgba(255,255,255,.07);border-top:2px solid var(--cream);">
+      <div class="cs-n" style="color:rgba(240,213,180,.4);">מפגש 01</div>
+      <div class="cs-en" style="color:var(--cream);">Gemini + Flow</div>
+      <div class="cs-he" style="color:rgba(240,213,180,.5);">לוגו מהרעיון לנכס</div>
+    </div>
+    <div class="cycle-step" style="background:rgba(255,255,255,.07);border-top:2px solid var(--cream);">
+      <div class="cs-n" style="color:rgba(240,213,180,.4);">מפגש 01</div>
+      <div class="cs-en" style="color:var(--cream);">GPT Image 2</div>
+      <div class="cs-he" style="color:rgba(240,213,180,.5);">Brand Identity + מוקאפים</div>
+    </div>
+    <div class="cycle-step" style="background:rgba(255,255,255,.1);border-top:2px solid var(--cream);">
+      <div class="cs-n" style="color:rgba(240,213,180,.4);">מפגש 02</div>
+      <div class="cs-en" style="color:var(--cream);">Claude Code</div>
+      <div class="cs-he" style="color:rgba(240,213,180,.5);">CLAUDE.md + Skills</div>
+    </div>
+    <div class="cycle-step" style="background:rgba(255,255,255,.1);border-top:2px solid var(--cream);">
+      <div class="cs-n" style="color:rgba(240,213,180,.4);">מפגש 02</div>
+      <div class="cs-en" style="color:var(--cream);">MCP Connections</div>
+      <div class="cs-he" style="color:rgba(240,213,180,.5);">Figma · Adobe · Models</div>
+    </div>
+    <div class="cycle-step" style="background:rgba(255,255,255,.04);border-top:2px dashed rgba(240,213,180,.3);">
+      <div class="cs-n" style="color:rgba(240,213,180,.3);">מפגש 03</div>
+      <div class="cs-en" style="color:rgba(240,213,180,.5);">Full Pipeline</div>
+      <div class="cs-he" style="color:rgba(240,213,180,.3);">Brief → Assets → Deploy</div>
+    </div>
+  </div>
+
+  <div class="callout light-on-blue">
+    <strong>מפגש 03:</strong> נחבר את הכל יחד — Pipeline מלא מ-brief קלה ועד נכסי מותג מוכנים. Automation, Agents, ו-AI Studio שרץ לבד.
+  </div>
+</section>
+
+</div><!-- /pane-02 -->
+
+<!-- ══════════════════════════════════════════════════
+     TAB PANE ALL — כל הפרומפטים
+══════════════════════════════════════════════════ -->
+<div class="tab-pane" id="pane-all">
+<section class="s-dark" style="min-height:100vh;">
+  <span class="s-num" style="color:rgba(255,255,255,.04);">∑</span>
+  <div class="s-label" style="color:rgba(255,255,255,.3);margin-bottom:4px;">Reference</div>
+  <h2 class="s-title" style="color:var(--white);margin-bottom:8px;">כל הפרומפטים — <span style="color:var(--cream);">שני המפגשים</span></h2>
+  <p class="s-intro" style="color:rgba(255,255,255,.4);">העתיקו, שנו, השתמשו. כל פרומפט ממוין לפי כלי ושלב</p>
+
+  <!-- SESSION 01 -->
+  <div class="all-prompts-session">
+    <div class="all-prompts-session-head">01</div>
+    <div class="all-session-label">מפגש 01 — Gemini · Google Flow · GPT Image 2</div>
+
+    <div class="prompt-group-head">Gemini — Creative Director</div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Brand Context Brief</span>
+        <span class="prompt-card-goal">טעינת הקשר למותג</span>
+      </div>
+      <div class="prompt-card-body">
+<span class="kw">KŌRI</span> is a premium Israeli artisanal ice cream boutique.<br>
+3 concept stores + premium corporate event catering.<br>
+Philosophy: Wabi-Sabi minimalism. Less sugar, rare botanical ingredients.<br>
+Target: urban design lovers 25–50, corporate HR buyers.<br>
+Visual DNA: architectural calm meets culinary art.<br>
+Tagline: "We don't sell sugar. We sell a moment of silence."
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Logo Directions Generator</span>
+        <span class="prompt-card-goal">Gemini → 3 פרומפטים לוגו</span>
+      </div>
+      <div class="prompt-card-body">
+You are a creative director, brand designer.<br>
+Create a prompt for generative tools for logo concepts creation.<br>
+The logo is for a brand called <span class="ph">[Brand Name]</span>.<br>
+Read the brief and suggest <span class="kw">3 directions</span> for a logo.<br>
+Provide a <span class="ph">text response only</span>.
+      </div>
+    </div>
+
+    <div class="prompt-group-head">Google Flow — Logo Prompts (KŌRI)</div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Direction 1 — Monochromatic Minimalist</span>
+        <span class="prompt-card-goal">Model: NanoBanana · + "isolated"</span>
+      </div>
+      <div class="prompt-card-body">
+A minimalist and modern logo design for an artisanal ice cream brand named <span class="kw">"KŌRI"</span>. Clean, elegant sans-serif typography paired with a subtle abstract geometric icon — stylized ice crystal or clean scoop silhouette. Soft minimalism, Japandi aesthetic. Monochromatic palette: warm off-white and charcoal gray. Studio lighting, flat vector style, <span class="ph">isolated on a solid light gray background</span>, text response only.
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Direction 2 — Refined Organic</span>
+        <span class="prompt-card-goal">Clay texture / earth tones</span>
+      </div>
+      <div class="prompt-card-body">
+A modern, upscale logo for a premium ice cream brand called <span class="kw">"KŌRI"</span>. Organic, fluid shapes resembling a smooth melting artisanal scoop, rendered in a clean clay texture. Elegant, spaced-out typography. Palette: soft sand tones, matte charcoal, accent of deep matcha green. High-end culinary branding, minimalist style, vector logo, <span class="ph">flat background</span>, text response only.
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Direction 3 — Bold Editorial</span>
+        <span class="prompt-card-goal">Typographic / Kanji element</span>
+      </div>
+      <div class="prompt-card-body">
+An editorial-style typographic logo for a luxury ice cream brand named <span class="kw">"KŌRI"</span>. Bold yet elegant high-contrast serif typography, with the Japanese Kanji for ice <span class="kw">(冰)</span> integrated as a small crisp secondary element. Inspired by architectural magazines and minimalist lifestyle brands. High contrast black and white, flat vector icon, clean margins, <span class="ph">isolated on white</span>, text response only.
+      </div>
+    </div>
+
+    <div class="prompt-group-head">GPT Image 2 — Brand Identity Board</div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Brand Identity Board</span>
+        <span class="prompt-card-goal">לוח מיתוג שלם 9:16</span>
+      </div>
+      <div class="prompt-card-body">
+ROLE: Senior brand designer creating a premium agency-grade brand identity board.<br>
+CONTEXT: Use the logo, colors, website structure, and brand direction as source material.<br>
+TASK: Create one ultra-clean vertical brand presentation board in exact <span class="ph">9:16 ratio</span>.<br>
+STRUCTURE: Top 18% — logo · brand essence · keywords · design principles<br>
+Middle 32% — color system · typography · visual language rules<br>
+Bottom 50% — 6–7 realistic branded applications<br>
+STYLE: Flat 2D editorial · white/soft neutral background · subtle grid<br>
+RULE: Applications must prove the system works — not just logo stickers.
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Art Director Mockup</span>
+        <span class="prompt-card-goal">3 מוקאפים ללא אנשים</span>
+      </div>
+      <div class="prompt-card-body">
+Act as an expert Art Director and Commercial Photographer.<br>
+Brand: <span class="ph">[Brand Name]</span> · Brief: <span class="ph">[Product Type]</span><br>
+Suggest 3 distinct mockup placements. For each:<br>
+• No people — no hands, faces, or bodies.<br>
+• Branding: clean product styling, crisp logo placement.<br>
+• Label: <span class="ph">Style</span>, <span class="ph">Colors</span>, <span class="ph">Composition</span>, <span class="ph">Vibe</span>.
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Social Post × 4</span>
+        <span class="prompt-card-goal">פוסטים מהמיתוג הקיים</span>
+      </div>
+      <div class="prompt-card-body">
+Based on the brand and visuals —<br>
+create <span class="kw">4 new social post designs</span> based on the current design.<br>
+Keep the visual system consistent: same colors, same type treatment,<br>
+same grid logic. Each post should feel like part of the same feed.
+      </div>
+    </div>
+  </div>
+
+  <!-- SESSION 02 -->
+  <div class="all-prompts-session">
+    <div class="all-prompts-session-head">02</div>
+    <div class="all-session-label">מפגש 02 — Claude Code · Skills · Connections</div>
+
+    <div class="prompt-group-head">Claude Code — פתיחת פרויקט</div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">First Message</span>
+        <span class="prompt-card-goal">הכרות עם הפרויקט</span>
+      </div>
+      <div class="prompt-card-body">
+Hi Claude, what files can you see in this folder?<br>
+List the structure and tell me what you understand about this project.
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Create CLAUDE.md</span>
+        <span class="prompt-card-goal">הגדרת הקשר פרויקט</span>
+      </div>
+      <div class="prompt-card-body">
+Create a CLAUDE.md for this brand project.<br>
+Brand name: <span class="ph">[Brand Name]</span><br>
+Include: project name, brand values, key file locations,<br>
+output conventions, and model preferences.<br>
+Base it on the files you can see in this folder.
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Initial Brief Analysis</span>
+        <span class="prompt-card-goal">ניתוח בריף ראשוני</span>
+      </div>
+      <div class="prompt-card-body">
+Read the brief in briefs/ and give me:<br>
+1. The core brand challenge in one sentence<br>
+2. Three possible visual territories<br>
+3. Two competitor brands I should research<br>
+<br>
+Save to outputs/initial-analysis.md
+      </div>
+    </div>
+
+    <div class="prompt-group-head">Skills — יצירה ובדיקה</div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Create analyze-brief Skill</span>
+        <span class="prompt-card-goal">Skill לניתוח בריף</span>
+      </div>
+      <div class="prompt-card-body">
+Consult the claude-code-guide and create a Skill<br>
+named <span class="kw">analyze-brief</span> in .claude/skills/.<br>
+<br>
+Trigger: "analyze brief" / "brief analysis"<br>
+Task: read all PDFs in briefs/ folder<br>
+Output: 3 visual design directions<br>
+&nbsp;&nbsp;- Color palette (5 hex values)<br>
+&nbsp;&nbsp;- Typography recommendation<br>
+&nbsp;&nbsp;- 2-sentence visual mood<br>
+Save: outputs/brief-analysis.md<br>
+<br>
+Test it after creation with our current brief.
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Iterate Direction</span>
+        <span class="prompt-card-goal">שיפור כיוון ספציפי</span>
+      </div>
+      <div class="prompt-card-body">
+Direction 2 is too conservative.<br>
+Push it further — more unexpected,<br>
+while staying within brand colors.<br>
+Keep directions 1 and 3 exactly as they are.
+      </div>
+    </div>
+
+    <div class="prompt-group-head">Figma MCP — חיבור לעיצוב</div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Figma Audit</span>
+        <span class="prompt-card-goal">קריאת Component Tree</span>
+      </div>
+      <div class="prompt-card-body">
+Connect to Figma file: <span class="ph">[Figma File URL]</span><br>
+Read the component structure of the current page.<br>
+List all components with their variants and properties.<br>
+Identify the design tokens: colors, spacing, typography.<br>
+<br>
+Save the component inventory to outputs/figma-audit.md
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Design Review</span>
+        <span class="prompt-card-goal">ניתוח עיצוב מול Guidelines</span>
+      </div>
+      <div class="prompt-card-body">
+Looking at the current Figma file —<br>
+compare the design against our brand guidelines in CLAUDE.md.<br>
+<br>
+Identify:<br>
+1. Color deviations from the brand palette<br>
+2. Typography inconsistencies<br>
+3. Spacing violations<br>
+<br>
+Suggest specific Figma changes for each issue found.
+      </div>
+    </div>
+
+    <div class="prompt-group-head">Adobe Firefly — יצירת נכסים</div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <span class="prompt-card-name">Generate + Remove Background</span>
+        <span class="prompt-card-goal">נכס מותג + רקע נקי</span>
+      </div>
+      <div class="prompt-card-body">
+Using Adobe Firefly, generate a brand hero image for <span class="ph">[Brand Name]</span>.<br>
+Style: <span class="ph">[direction from analyze-brief]</span><br>
+Dimensions: 1920×1080<br>
+<br>
+Save to brand/hero-01.jpg<br>
+Then remove the background and save brand/hero-01-nobg.png
+      </div>
+    </div>
+  </div>
+
+</section>
+</div><!-- /pane-all -->
+
+<!-- ══ FOOTER ═════════════════════════════════════════ -->
+<footer>
+  <div class="footer-left">
+    <div class="footer-brand">AI Factory</div>
+    <div class="footer-tagline">Rethink the way you design — Structure · Systems · Superpowers</div>
+  </div>
+  <div class="footer-right">
+    Zachi Diner / AI Factory<br>
+    2026 · Creative &amp; AI<br>
+    פורמה · מפגש 01–02 מתוך 3
+  </div>
+</footer>
+
+<script>
+// ── NAV CONFIGS PER TAB ───────────────────────────────
+const navConfigs = {
+  '01': [
+    {href:'#agenda',label:'סדר יום'},
+    {href:'#tools',label:'כלים'},
+    {href:'#gemini',label:'Gemini + Flow'},
+    {href:'#gpt',label:'GPT Image 2'},
+    {href:'#agents',label:'Agents'},
+    {href:'#claude',label:'Claude'},
+    {href:'#prompts',label:'Prompts'},
+  ],
+  '02': [
+    {href:'#recap02',label:'חזרה'},
+    {href:'#system02',label:'Design System'},
+    {href:'#setup02',label:'התקנות'},
+    {href:'#components02',label:'רכיבים'},
+    {href:'#project02',label:'פרויקט'},
+    {href:'#skills02',label:'Skills'},
+    {href:'#figma02',label:'Figma'},
+    {href:'#summary02',label:'סיכום'},
+  ],
+  'all': [
+    {href:'#',label:'כל הפרומפטים — Reference Sheet'},
+  ],
+};
+
+function setTab(tab) {
+  // Swap panes
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  const pane = document.getElementById('pane-' + tab);
+  if (pane) pane.classList.add('active');
+
+  // Swap session buttons
+  document.querySelectorAll('.ss-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+
+  // Swap nav links
+  const nl = document.getElementById('nav-links');
+  const links = navConfigs[tab] || [];
+  nl.innerHTML = links.map(l =>
+    `<li><a href="${l.href}">${l.label}</a></li>`
+  ).join('');
+
+  // Scroll to top
+  window.scrollTo(0, 0);
+
+  // Save state
+  history.replaceState(null, '', '#tab=' + tab);
+}
+
+// Session switcher clicks
+document.querySelectorAll('.ss-btn').forEach(btn => {
+  btn.addEventListener('click', () => setTab(btn.dataset.tab));
+});
+
+// Restore from URL hash on load
+(function() {
+  const m = location.hash.match(/tab=(\w+)/);
+  if (m) setTab(m[1]);
+})();
+
+// ── PROGRESS BAR ─────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const el = document.documentElement;
+  const pct = el.scrollTop / (el.scrollHeight - el.clientHeight) * 100;
+  document.getElementById('pbar').style.width = pct + '%';
+}, {passive:true});
+
+// ── ACTIVE NAV ON SCROLL ─────────────────────────────
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('[id]').forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--cream)' : '';
+  });
+}, {passive: true});
+</script>
+</body>
+</html>
