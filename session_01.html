@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flow Follows Prompt — פורמה מפגש 01</title>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -641,6 +642,125 @@ footer{
 .tab-pane{display:none;}
 .tab-pane.active{display:block;}
 
+/* ══ LOGIN OVERLAY ══════════════════════════════════ */
+#login-overlay{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--blue);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:0;
+  transition:opacity 400ms cubic-bezier(0.23,1,0.32,1),
+             transform 400ms cubic-bezier(0.23,1,0.32,1);
+}
+#login-overlay.hide{
+  opacity:0;transform:scale(1.03);pointer-events:none;
+}
+.login-watermark{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;overflow:hidden;
+}
+.login-watermark span{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:clamp(160px,22vw,320px);
+  color:rgba(255,255,255,0.04);
+  letter-spacing:-.04em;text-transform:uppercase;
+  white-space:nowrap;user-select:none;
+}
+.login-card{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;
+  align-items:center;gap:32px;
+  text-align:center;
+}
+.login-logo-ring{
+  width:56px;height:56px;
+  border:1.5px solid rgba(255,255,255,0.35);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:16px;font-weight:700;color:#fff;
+  margin-bottom:4px;
+}
+.login-eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,0.45);margin-bottom:-24px;
+}
+.login-title{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:clamp(32px,5vw,56px);
+  color:var(--cream);letter-spacing:-.02em;line-height:1;
+}
+.login-sub{
+  font-family:'Assistant',sans-serif;
+  font-size:15px;color:rgba(255,255,255,0.5);
+  margin-top:-16px;
+}
+.login-divider{
+  width:40px;height:1px;background:rgba(255,255,255,0.15);
+}
+.login-btn{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:10px;
+  padding:14px 28px;
+  color:#fff;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;
+  transition:
+    background 160ms cubic-bezier(0.23,1,0.32,1),
+    border-color 160ms cubic-bezier(0.23,1,0.32,1),
+    transform 120ms ease-out;
+}
+.login-btn:hover{
+  background:rgba(255,255,255,0.15);
+  border-color:rgba(255,255,255,0.35);
+}
+.login-btn:active{transform:scale(0.97);}
+.login-btn svg{flex-shrink:0;}
+.login-note{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.06em;
+  color:rgba(255,255,255,0.25);
+}
+/* User badge in nav */
+.nav-user{
+  display:flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(255,255,255,0.6);
+  cursor:pointer;
+  transition:color 150ms;
+  position:relative;
+}
+.nav-user:hover{color:rgba(255,255,255,0.9);}
+.nav-user img{
+  width:26px;height:26px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,0.3);
+  object-fit:cover;
+}
+.nav-user-avatar{
+  width:26px;height:26px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,0.3);
+  background:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:var(--blue);
+}
+.nav-signout{
+  position:absolute;top:calc(100% + 8px);right:0;
+  background:#1e2a6e;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:6px;padding:8px 14px;
+  font-size:10px;letter-spacing:.06em;
+  color:rgba(255,255,255,0.6);white-space:nowrap;
+  opacity:0;pointer-events:none;
+  transition:opacity 150ms;
+}
+.nav-user:hover .nav-signout{opacity:1;pointer-events:auto;}
+
 /* ══ SESSION 02 SPECIFIC ════════════════════════════ */
 .install-row{
   display:grid;grid-template-columns:44px 1fr;
@@ -735,6 +855,28 @@ footer{
 <body>
 
 <!-- NAV -->
+<!-- ══ LOGIN OVERLAY ══════════════════════════════════════════ -->
+<div id="login-overlay">
+  <div class="login-watermark"><span>AI</span></div>
+  <div class="login-card">
+    <div class="login-logo-ring">ZD</div>
+    <div class="login-eyebrow">Forma · AI Factory</div>
+    <div class="login-title">Flow Follows<br>Prompt</div>
+    <div class="login-sub">סדנת AI לעיצוב — Workshop Materials</div>
+    <div class="login-divider"></div>
+    <button class="login-btn" id="login-btn" onclick="triggerGoogleLogin()">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="rgba(255,255,255,0.85)"/>
+        <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z" fill="rgba(255,255,255,0.7)"/>
+        <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332Z" fill="rgba(255,255,255,0.55)"/>
+        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58Z" fill="rgba(255,255,255,0.9)"/>
+      </svg>
+      Continue with Google
+    </button>
+    <div class="login-note">Workshop participants only · כניסה למשתתפי הסדנה</div>
+  </div>
+</div>
+
 <nav>
   <div class="nav-brand">
     <div class="nav-logo">ZD</div>
@@ -749,6 +891,11 @@ footer{
     <li><a href="#claude">Claude</a></li>
     <li><a href="#prompts">Prompts</a></li>
   </ul>
+  <div id="nav-user-badge" class="nav-user" style="display:none" onclick="handleSignOut()">
+    <div class="nav-user-avatar" id="nav-avatar-initials"></div>
+    <span id="nav-user-name"></span>
+    <div class="nav-signout">Sign out</div>
+  </div>
   <div class="session-switcher">
     <button class="ss-btn active" data-tab="01"><span class="ss-n">01</span>מפגש</button>
     <button class="ss-btn" data-tab="02"><span class="ss-n">02</span>מפגש</button>
@@ -2878,6 +3025,120 @@ document.querySelectorAll('.ss-btn').forEach(btn => {
 (function() {
   const m = location.hash.match(/tab=(\w+)/);
   if (m) setTab(m[1]);
+})();
+
+// ══════════════════════════════════════════════════════
+// AUTH — Google Identity Services
+// ══════════════════════════════════════════════════════
+
+// ┌─ CONFIG ─────────────────────────────────────────┐
+const GOOGLE_CLIENT_ID   = '113349942516-1qi1kh100akabbjfksm7ve4uoh6nfsmh.apps.googleusercontent.com';
+const SHEET_WEBHOOK_URL  = 'https://script.google.com/macros/s/AKfycbyj3IuMKiDy93gEr18eprbLFSS3N5aJ7NRo8E4317FYQOr0rVXMCROZ3vKsUqTa-21r/exec';
+// └──────────────────────────────────────────────────┘
+
+const STORAGE_KEY = 'af_user';
+
+function getStoredUser() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch { return null; }
+}
+
+function storeUser(u) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
+}
+
+function clearUser() {
+  localStorage.removeItem(STORAGE_KEY);
+}
+
+function showApp(user) {
+  // Hide overlay
+  const overlay = document.getElementById('login-overlay');
+  overlay.classList.add('hide');
+  setTimeout(() => overlay.remove(), 500);
+
+  // Show user badge in nav
+  const badge   = document.getElementById('nav-user-badge');
+  const initials= document.getElementById('nav-avatar-initials');
+  const nameEl  = document.getElementById('nav-user-name');
+  const first   = (user.name || user.email).split(/\s+/)[0];
+  initials.textContent = (user.name || user.email).charAt(0).toUpperCase();
+  nameEl.textContent   = first;
+  badge.style.display  = 'flex';
+
+  // Replace avatar initials with photo if available
+  if (user.picture) {
+    const img = document.createElement('img');
+    img.src = user.picture;
+    img.alt = user.name;
+    initials.replaceWith(img);
+  }
+}
+
+function logVisitor(user) {
+  if (!SHEET_WEBHOOK_URL || SHEET_WEBHOOK_URL === 'YOUR_APPS_SCRIPT_URL') return;
+  fetch(SHEET_WEBHOOK_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      name:      user.name  || '',
+      email:     user.email || '',
+      picture:   user.picture || '',
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent
+    })
+  }).catch(() => {});
+}
+
+function handleCredentialResponse(response) {
+  // Decode the JWT payload (no verification needed client-side — just for UX)
+  const parts   = response.credential.split('.');
+  const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+  const user    = {
+    name:    payload.name    || '',
+    email:   payload.email   || '',
+    picture: payload.picture || '',
+    sub:     payload.sub
+  };
+  storeUser(user);
+  logVisitor(user);
+  showApp(user);
+}
+
+function triggerGoogleLogin() {
+  if (typeof google === 'undefined') {
+    alert('Google Sign-In לא נטען. בדוק את ה-Client ID ונסה שוב.');
+    return;
+  }
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback:  handleCredentialResponse,
+    ux_mode:   'popup'
+  });
+  google.accounts.id.prompt();
+}
+
+function handleSignOut() {
+  clearUser();
+  location.reload();
+}
+
+// ── INIT AUTH ON LOAD ─────────────────────────────────
+(function initAuth() {
+  const user = getStoredUser();
+  if (user) {
+    showApp(user);
+  }
+  // Initialize GSI (for One Tap) when ready
+  window.addEventListener('load', () => {
+    if (typeof google !== 'undefined' && GOOGLE_CLIENT_ID !== 'YOUR_GOOGLE_CLIENT_ID') {
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback:  handleCredentialResponse,
+        ux_mode:   'popup'
+      });
+    }
+  });
 })();
 
 // ── PROGRESS BAR ─────────────────────────────────────
