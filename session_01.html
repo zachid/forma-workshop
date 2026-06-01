@@ -632,11 +632,122 @@ footer{
   background:rgba(255,255,255,.1);
   margin:0 2px;flex-shrink:0;
 }
-.ss-btn.ss-all{
-  color:rgba(255,255,255,.4);
-}
+.ss-btn.ss-all{color:rgba(255,255,255,.4);}
 .ss-btn.ss-all:hover{color:rgba(255,255,255,.75);}
 .ss-btn.ss-all.active{color:#1e30b8;}
+.ss-btn.ss-tips{color:rgba(255,255,255,.4);}
+.ss-btn.ss-tips:hover{color:rgba(255,255,255,.75);}
+.ss-btn.ss-tips.active{color:#1e30b8;}
+
+/* ══ TIPS TAB — SPECIFIC STYLES ══════════════════════ */
+.toolbox-hero{
+  background:var(--blue);
+  padding:80px 48px 72px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:48px;min-height:360px;position:relative;overflow:hidden;
+}
+.toolbox-hero-wm{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;overflow:hidden;
+}
+.toolbox-hero-wm span{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:clamp(180px,24vw,340px);color:rgba(255,255,255,.03);
+  letter-spacing:-.04em;text-transform:uppercase;white-space:nowrap;
+  user-select:none;
+}
+.toolbox-hero-left{position:relative;z-index:1;}
+.toolbox-hero-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:16px;
+}
+.toolbox-hero-title{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:clamp(40px,5.5vw,72px);color:var(--cream);
+  letter-spacing:-.02em;line-height:1;margin-bottom:20px;
+}
+.toolbox-cta{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--cream);color:var(--blue);
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  padding:14px 28px;border-radius:8px;text-decoration:none;
+  transition:transform 140ms cubic-bezier(0.23,1,0.32,1),
+             box-shadow 140ms cubic-bezier(0.23,1,0.32,1);
+}
+.toolbox-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.25);}
+.toolbox-cta:active{transform:scale(0.97);}
+.toolbox-cta svg{flex-shrink:0;}
+.toolbox-hero-right{
+  position:relative;z-index:1;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:24px 28px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--cream-dim);line-height:2;
+  min-width:220px;flex-shrink:0;
+}
+.toolbox-hero-right strong{color:var(--cream);display:block;margin-bottom:8px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;}
+
+/* Best practices */
+.bp-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+.bp-col-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;gap:8px;
+}
+.bp-col-label.do{color:#2ecc71;}
+.bp-col-label.dont{color:#e74c3c;}
+.bp-do-list{display:flex;flex-direction:column;gap:0;}
+.bp-do-item{
+  display:flex;gap:16px;padding:20px 0;
+  border-bottom:1px solid var(--rule);
+}
+.bp-do-item:first-child{border-top:1px solid var(--rule);}
+.bp-do-n{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  font-weight:700;color:var(--blue);flex-shrink:0;
+  width:28px;padding-top:2px;
+}
+.bp-do-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.bp-do-desc{font-size:12px;color:var(--ink3);line-height:1.6;}
+.bp-dont-list{display:flex;flex-direction:column;gap:10px;}
+.bp-dont-item{
+  background:var(--white);border:1px solid #fde8e8;
+  border-right:3px solid #e74c3c;
+  border-radius:6px;padding:16px 18px;
+}
+.bp-dont-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.bp-dont-desc{font-size:12px;color:var(--ink3);line-height:1.6;}
+.bp-callout{
+  background:var(--blue);color:var(--cream);
+  border-radius:8px;padding:20px 24px;margin-top:16px;
+  font-size:13px;line-height:1.7;
+}
+.bp-callout strong{display:block;margin-bottom:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.7;}
+
+/* Resources grid */
+.res-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.res-card{
+  display:flex;align-items:flex-start;gap:14px;
+  background:var(--white);border:1px solid var(--rule);
+  border-radius:8px;padding:18px;
+  text-decoration:none;color:inherit;
+  transition:border-color 150ms,transform 120ms cubic-bezier(0.23,1,0.32,1),
+             box-shadow 150ms;
+}
+.res-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 6px 20px rgba(52,81,232,.1);}
+.res-card:active{transform:scale(0.98);}
+.res-ico{
+  width:36px;height:36px;border-radius:8px;
+  background:var(--bg);border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.res-body{flex:1;min-width:0;}
+.res-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px;line-height:1.3;}
+.res-sub{font-size:11px;color:var(--ink3);line-height:1.5;margin-bottom:6px;}
+.res-url{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);opacity:.6;}
 
 /* ══ TAB PANES ═══════════════════════════════════════ */
 .tab-pane{display:none;}
@@ -901,6 +1012,8 @@ footer{
     <button class="ss-btn" data-tab="02"><span class="ss-n">02</span>מפגש</button>
     <span class="ss-divider"></span>
     <button class="ss-btn ss-all" data-tab="all"><span class="ss-n">∑</span>פרומפטים</button>
+    <span class="ss-divider"></span>
+    <button class="ss-btn ss-tips" data-tab="tips"><span class="ss-n">★</span>טיפים</button>
   </div>
 </nav>
 
@@ -2951,6 +3064,193 @@ Then remove the background and save brand/hero-01-nobg.png
 </section>
 </div><!-- /pane-all -->
 
+<!-- ══════════════════════════════════════════════════════
+     TAB PANE TIPS — טיפים ומשאבים
+══════════════════════════════════════════════════════ -->
+<div class="tab-pane" id="pane-tips">
+
+<!-- ══ TOOLBOX HERO ══════════════════════════════════ -->
+<section class="toolbox-hero" id="toolbox">
+  <div class="toolbox-hero-wm"><span>TOOLS</span></div>
+  <div class="toolbox-hero-left">
+    <div class="toolbox-hero-label">AI Factory · הכלים שלנו</div>
+    <div class="toolbox-hero-title">AI Tools<br>for Designers</div>
+    <a href="https://ai-toolbox-6dcf29a4.base44.app" target="_blank" class="toolbox-cta">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      פתח את ארגז הכלים
+    </a>
+  </div>
+  <div class="toolbox-hero-right">
+    <strong>מה תמצאו שם</strong>
+    כלי AI לעיצוב, פרודוקטיביות<br>
+    וקריאייטיב — מאורגנים,<br>
+    מסוננים ועם תיאורים.<br><br>
+    מתעדכן בקביעות ✦
+  </div>
+</section>
+
+<!-- ══ BEST PRACTICES ════════════════════════════════ -->
+<section class="s s-white" id="bestpractices">
+  <div class="s-label">שיטות עבודה</div>
+  <h2 class="s-title">איך להשתמש ב-Claude נכון</h2>
+  <p class="s-intro">ההרגלים שמבדילים בין משתמשי Claude טובים למשתמשים מעולים.</p>
+
+  <div class="bp-grid">
+    <!-- DO -->
+    <div>
+      <div class="bp-col-label do">✅ עשו את זה</div>
+      <div class="bp-do-list">
+        <div class="bp-do-item">
+          <div class="bp-do-n">01</div>
+          <div>
+            <div class="bp-do-title">תנו הקשר לפני המשימה</div>
+            <div class="bp-do-desc">ספרו ל-Claude מי אתם, מה הפרויקט ומי הקהל. בלוק הקשר של 3 שורות בתחילת כל פרומפט חוסך 5 סבבי הלאה-והחזר.</div>
+          </div>
+        </div>
+        <div class="bp-do-item">
+          <div class="bp-do-n">02</div>
+          <div>
+            <div class="bp-do-title">תנו דוגמה של מה שנראה טוב</div>
+            <div class="bp-do-desc">"כתוב כותרות כמו: [דוגמה]" — דוגמה אחת עולה על פסקה שלמה של הוראות.</div>
+          </div>
+        </div>
+        <div class="bp-do-item">
+          <div class="bp-do-n">03</div>
+          <div>
+            <div class="bp-do-title">בקשו אפשרויות, לא רק תשובה אחת</div>
+            <div class="bp-do-desc">"תן לי 3 אפשרויות" מניב תוצאות טובות יותר מ"תן לי את התשובה." הרעיון הראשון של Claude לעיתים רחוקות הוא הטוב ביותר.</div>
+          </div>
+        </div>
+        <div class="bp-do-item">
+          <div class="bp-do-n">04</div>
+          <div>
+            <div class="bp-do-title">עבדו בתוך אותה שיחה</div>
+            <div class="bp-do-desc">אל תתחילו צ'אט חדש. בנו על הפלט הקודם: "טוב — עכשיו קצר יותר עם CTA בסוף."</div>
+          </div>
+        </div>
+        <div class="bp-do-item">
+          <div class="bp-do-n">05</div>
+          <div>
+            <div class="bp-do-title">השתמשו ב-CLAUDE.md לכללים קבועים</div>
+            <div class="bp-do-desc">כל דבר שאתם מסבירים יותר מפעמיים → שימו אותו ב-CLAUDE.md. הוא נטען אוטומטית בכל סשן.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DONT -->
+    <div>
+      <div class="bp-col-label dont">❌ הימנעו מזה</div>
+      <div class="bp-dont-list">
+        <div class="bp-dont-item">
+          <div class="bp-dont-title">אל תתחילו עם פרומפט ריק</div>
+          <div class="bp-dont-desc">"כתוב לי מצגת" → גרוע. "כתוב 10 שקפים לסטארטאפ פינטק, טון פורמלי, על בסיס briefs/client.pdf" → מצוין.</div>
+        </div>
+        <div class="bp-dont-item">
+          <div class="bp-dont-title">אל תקבלו את הפלט הראשון</div>
+          <div class="bp-dont-desc">Claude משתפר דרמטית עם סבב משוב אחד. "זה יותר מדי גנרי — דחוף את הכיוון הוויזואלי רחוק יותר" תמיד עוזר.</div>
+        </div>
+        <div class="bp-dont-item">
+          <div class="bp-dont-title">אל תדביקו מידע רגיש בצ'אט</div>
+          <div class="bp-dont-desc">מפתחות API, סיסמאות, מידע אישי של לקוחות — אלה שייכים ב-.env או בקבצים, לעולם לא בחלון הצ'אט.</div>
+        </div>
+        <div class="bp-dont-item">
+          <div class="bp-dont-title">אל תבקשו מ-Claude לנחש את הבריף</div>
+          <div class="bp-dont-desc">אם אין בריף ב-briefs/ — Claude ימציא אחד. תמיד הפילו קודם את הקובץ האמיתי.</div>
+        </div>
+      </div>
+      <div class="bp-callout">
+        <strong>הזרימה הטובה ביותר לפרויקט חדש</strong>
+        הפילו בריף ← קראו את המותג ← שאלו שאלות מבהירות ← קבלו 3 כיוונים ← בחרו אחד ← בנו ← חזרו על התהליך ← יצאו
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RESOURCES ═════════════════════════════════════ -->
+<section class="s s-white" id="resources-tips" style="padding-top:0">
+  <div class="s-label">משאבים</div>
+  <h2 class="s-title">כל מה שצריך להמשיך</h2>
+  <p class="s-intro">קישורים לכל הכלים, הקורסים והמאגרים שהוזכרו בסדנה.</p>
+
+  <div class="res-grid">
+    <a href="https://claude.com/download" target="_blank" class="res-card">
+      <div class="res-ico">⬇</div>
+      <div class="res-body">
+        <div class="res-title">הורדת Claude Desktop</div>
+        <div class="res-sub">Mac ו-Windows — חינם עם Claude Pro/Max</div>
+        <div class="res-url">claude.com/download</div>
+      </div>
+    </a>
+    <a href="https://github.com/anthropics/skills" target="_blank" class="res-card">
+      <div class="res-ico">📦</div>
+      <div class="res-body">
+        <div class="res-title">Anthropic Skills Repository</div>
+        <div class="res-sub">Skills מוכנים: docx, pptx, pdf, xlsx ועוד</div>
+        <div class="res-url">github.com/anthropics/skills</div>
+      </div>
+    </a>
+    <a href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank" class="res-card">
+      <div class="res-ico">🎓</div>
+      <div class="res-body">
+        <div class="res-title">Introduction to Agent Skills</div>
+        <div class="res-sub">קורס חינמי רשמי של Anthropic על בניית Skills</div>
+        <div class="res-url">anthropic.skilljar.com</div>
+      </div>
+    </a>
+    <a href="https://support.claude.com/en/articles/12512198-creating-custom-skills" target="_blank" class="res-card">
+      <div class="res-ico">📖</div>
+      <div class="res-body">
+        <div class="res-title">יצירת Skills מותאמים אישית</div>
+        <div class="res-sub">מדריך רשמי: פורמט SKILL.md, אריזה, שיטות עבודה</div>
+        <div class="res-url">support.claude.com</div>
+      </div>
+    </a>
+    <a href="https://gamma.app" target="_blank" class="res-card">
+      <div class="res-ico">🎥</div>
+      <div class="res-body">
+        <div class="res-title">Gamma — בניית מצגות AI</div>
+        <div class="res-sub">הדביקו את פלט ה-Markdown של Claude ← דק מקצועי מיידי</div>
+        <div class="res-url">gamma.app</div>
+      </div>
+    </a>
+    <a href="https://fal.ai" target="_blank" class="res-card">
+      <div class="res-ico">🖼</div>
+      <div class="res-body">
+        <div class="res-title">fal.ai — Image Generation API</div>
+        <div class="res-sub">Flux, Grok, Nano Banana 2 — מחברים מ-Claude Code</div>
+        <div class="res-url">fal.ai</div>
+      </div>
+    </a>
+    <a href="https://github.com/VoltAgent/awesome-claude-code-subagents" target="_blank" class="res-card">
+      <div class="res-ico">🤖</div>
+      <div class="res-body">
+        <div class="res-title">Awesome Claude Code Subagents</div>
+        <div class="res-sub">100+ סוכנים מוכנים למשימות ספציפיות</div>
+        <div class="res-url">VoltAgent/awesome-claude-code-subagents</div>
+      </div>
+    </a>
+    <a href="https://github.com/VoltAgent/awesome-design-md" target="_blank" class="res-card">
+      <div class="res-ico">🎨</div>
+      <div class="res-body">
+        <div class="res-title">Awesome DESIGN.md</div>
+        <div class="res-sub">מערכות עיצוב שחיות בתוך הפרויקט — ממשקי Stripe/Notion/Linear</div>
+        <div class="res-url">VoltAgent/awesome-design-md</div>
+      </div>
+    </a>
+    <a href="https://agentskills.io" target="_blank" class="res-card">
+      <div class="res-ico">⚡</div>
+      <div class="res-body">
+        <div class="res-title">agentskills.io — Open Standard</div>
+        <div class="res-sub">עובד עם כל סוכן תואם, לא רק Claude</div>
+        <div class="res-url">agentskills.io</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+</div><!-- /pane-tips -->
+
 <!-- ══ FOOTER ═════════════════════════════════════════ -->
 <footer>
   <div class="footer-left">
@@ -2988,6 +3288,11 @@ const navConfigs = {
   ],
   'all': [
     {href:'#',label:'כל הפרומפטים — Reference Sheet'},
+  ],
+  'tips': [
+    {href:'#toolbox',label:'כלים'},
+    {href:'#bestpractices',label:'Best Practices'},
+    {href:'#resources-tips',label:'משאבים'},
   ],
 };
 
